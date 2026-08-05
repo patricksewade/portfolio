@@ -5,11 +5,12 @@
 - Approche MVC procédural (Routing centralisé, Contrôleurs sans vue, DAL sans requêtes dans les contrôleurs).
 - Fichier `.env` pour la configuration, parsé nativement sans librairie.
 
-## 2. Arborescence Stricte
+## 2. Arborescence Stricte & Design System
 - `/public` : Point d'entrée unique (`index.php`), `.htaccess`, assets.
 - `/config` : Constantes globales, `env_loader.php` (lecture du `.env`), `db_connection.php`.
 - `/includes` : `router.php`, `/controllers`, `/dal`, `/utils` (sécurité, SMTP).
-- `/templates` : `/layout`, `/pages`, `/components` (fonctions d'affichage PHP).
+- `/templates` : Layouts et pages. Utilisation de TailwindCSS en mode "Premium" (effets de verre, ombres douces, micro-interactions).
+- `/templates/components` : `ui_components.php` (fonctions d'affichage PHP pour centraliser le code UI répétitif).
 
 ## 3. Base de Données & Migrations
 - MySQL 8 / MariaDB 11.4 via PDO.
