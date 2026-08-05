@@ -15,6 +15,10 @@ function dispatch_request(string $uri, string $method, PDO $pdo): void {
                 'GET' => call_controller('home_controller.php', 'handle_home_page', [$pdo]),
                 default => http_error(405)
             },
+            '/mentions-legales' => match ($method) {
+                'GET' => call_controller('home_controller.php', 'handle_mentions_legales', []),
+                default => http_error(405)
+            },
             '/contact' => match ($method) {
                 'GET' => call_controller('contact_controller.php', 'handle_contact_page', []),
                 'POST' => call_controller('contact_controller.php', 'handle_contact_post', [$pdo]),

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Portfolio de Ernest Patrick SEWADE, Développeur Web.">
     <title><?= e($page_title ?? 'Portfolio') ?></title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="<?= BASE_URL ?>/favicon.png">
     <!-- Tailwind CSS (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Polices Google (Inter) -->
@@ -16,10 +18,18 @@
 <body class="bg-slate-50 text-slate-900 flex flex-col min-h-screen">
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="<?= BASE_URL ?>/" class="text-2xl font-extrabold tracking-tight text-blue-600">E. P. SEWADE</a>
-            <nav class="space-x-6 font-medium">
-                <a href="<?= BASE_URL ?>/" class="hover:text-blue-600 transition-colors">Projets</a>
-                <a href="<?= BASE_URL ?>/contact" class="hover:text-blue-600 transition-colors">Contact</a>
+            <a href="<?= BASE_URL ?>/" class="group flex items-center text-2xl font-extrabold tracking-tight select-none">
+                <span class="text-blue-500 font-mono text-3xl font-light mr-2 group-hover:-translate-x-1.5 transition-transform duration-300">{</span>
+                <img src="<?= BASE_URL ?>/assets/images/header-avatar.png" alt="Avatar E. P. SEWADE" class="w-10 h-10 rounded-full shadow-sm ring-2 ring-white group-hover:shadow-md group-hover:scale-105 transition-all duration-300">
+                <span class="text-indigo-500 font-mono text-3xl font-light ml-2 group-hover:translate-x-1.5 transition-transform duration-300">}</span>
+            </a>
+            <nav class="space-x-4 md:space-x-6 font-semibold hidden md:flex">
+                <a href="<?= BASE_URL ?>/#profil" class="text-slate-600 hover:text-blue-600 transition-colors">Profil</a>
+                <a href="<?= BASE_URL ?>/#competences" class="text-slate-600 hover:text-blue-600 transition-colors">Compétences</a>
+                <a href="<?= BASE_URL ?>/#experiences" class="text-slate-600 hover:text-blue-600 transition-colors">Expériences</a>
+                <a href="<?= BASE_URL ?>/#formations" class="text-slate-600 hover:text-blue-600 transition-colors">Formations</a>
+                <a href="<?= BASE_URL ?>/#projets" class="text-slate-600 hover:text-blue-600 transition-colors">Projets</a>
+                <a href="<?= BASE_URL ?>/contact" class="text-slate-600 hover:text-blue-600 transition-colors">Contact</a>
                 <?php if (!empty($_SESSION['is_admin'])): ?>
                     <a href="<?= BASE_URL ?>/admin/dashboard" class="text-indigo-600 hover:text-indigo-800">Dashboard</a>
                     <a href="<?= BASE_URL ?>/logout" class="text-red-600 hover:text-red-800">Déconnexion</a>
