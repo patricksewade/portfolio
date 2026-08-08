@@ -20,7 +20,6 @@ function dispatch_request(string $uri, string $method, PDO $pdo): void {
                 default => http_error(405)
             },
             '/contact' => match ($method) {
-                'GET' => call_controller('contact_controller.php', 'handle_contact_page', []),
                 'POST' => call_controller('contact_controller.php', 'handle_contact_post', [$pdo]),
                 default => http_error(405)
             },

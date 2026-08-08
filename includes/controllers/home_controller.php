@@ -17,6 +17,33 @@ function handle_home_page(PDO $pdo): void {
             'image_url' => ''
         ],
         [
+            'is_featured' => 1,
+            'title' => 'Garage Flow',
+            'description' => 'Application Web en PHP natif (MVC procédural) de gestion de devis automobiles avec panier en session, sécurisation des formulaires et persistance des données en JSON.',
+            'tech_stack' => 'PHP, MVC, JSON, Tailwind CSS',
+            'github_url' => 'https://github.com/patricksewade/garage-flow',
+            'live_demo_url' => '',
+            'image_url' => ''
+        ],
+        [
+            'is_featured' => 1,
+            'title' => 'OBD-Reader',
+            'description' => 'Script CLI en PHP natif pour analyser et formater les codes défauts (DTC) issus de diagnostics automobiles OBD-II.',
+            'tech_stack' => 'PHP, CLI, OBD-II',
+            'github_url' => 'https://github.com/patricksewade/obd-reader',
+            'live_demo_url' => '',
+            'image_url' => ''
+        ],
+        [
+            'is_featured' => 1,
+            'title' => 'API Books Redis',
+            'description' => 'Développement d\'une API REST de gestion de livres (TP) avec implémentation de Redis pour l\'optimisation des performances et la gestion du cache.',
+            'tech_stack' => 'PHP, Redis, API REST',
+            'github_url' => 'https://github.com/patricksewade/api_books_redis',
+            'live_demo_url' => '',
+            'image_url' => ''
+        ],
+        [
             'is_featured' => 0,
             'title' => 'PROMADE',
             'description' => 'Description et fonctionnalités à venir pour le projet PROMADE.',
