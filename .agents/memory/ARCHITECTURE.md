@@ -9,7 +9,7 @@
 - `/public` : Point d'entrée unique (`index.php`), `.htaccess`, assets.
 - `/config` : Constantes globales, `env_loader.php` (lecture du `.env`), `db_connection.php`.
 - `/includes` : `router.php`, `/controllers`, `/dal`, `/utils` (sécurité, SMTP).
-- `/templates` : Layouts et pages. Utilisation de TailwindCSS en mode "Premium" (effets de verre, ombres douces, micro-interactions).
+- `/templates` : Front-office géré en mode **One-Page** via `home.php`. Utilisation de TailwindCSS en mode "Premium" (effets de verre, ombres, icônes SVG intégrées).
 - `/templates/components` : `ui_components.php` (fonctions d'affichage PHP pour centraliser le code UI répétitif).
 
 ## 3. Base de Données & Migrations

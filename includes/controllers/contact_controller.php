@@ -3,10 +3,6 @@ declare(strict_types=1);
 require_once BASE_PATH . '/includes/dal/messages_dal.php';
 require_once BASE_PATH . '/includes/utils/smtp_socket.php';
 
-function handle_contact_page(): void {
-    $page_title = "Contact | Portfolio E. P. SEWADE";
-    require_once BASE_PATH . '/templates/pages/contact.php';
-}
 
 function handle_contact_post(PDO $pdo): void {
     require_valid_csrf();
@@ -18,7 +14,7 @@ function handle_contact_post(PDO $pdo): void {
     
     if (!$name || !$email || !$subject || !$content) {
         $_SESSION['flash_error'] = "Veuillez remplir tous les champs correctement avec une adresse email valide.";
-        header('Location: ' . BASE_URL . '/contact');
+        header('Location: ' . BASE_URL . '/#contact');
         exit;
     }
     
@@ -40,6 +36,6 @@ function handle_contact_post(PDO $pdo): void {
         $_SESSION['flash_error'] = "Une erreur est survenue lors de l'enregistrement de votre message.";
     }
     
-    header('Location: ' . BASE_URL . '/contact');
+    header('Location: ' . BASE_URL . '/#contact');
     exit;
 }

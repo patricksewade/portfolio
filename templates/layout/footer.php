@@ -19,7 +19,7 @@
     <footer class="bg-white border-t border-slate-200 mt-auto">
         <div class="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
             <div class="mb-4 md:mb-0 flex flex-col md:flex-row md:items-center gap-2 md:gap-6">
-                <span>&copy; Ernest Patrick SEWADE | <?= date('Y') ?></span>
+                <span>&copy; <?= date('Y') ?> | Ernest Patrick SEWADE - Tous droits réservés</span>
                 <a href="<?= BASE_URL ?>/mentions-legales" class="text-slate-400 hover:text-slate-600 transition-colors">Mentions légales</a>
             </div>
             
@@ -34,5 +34,47 @@
             </div>
         </div>
     </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('section[id], div#profil');
+            const navItems = document.querySelectorAll('.nav-item');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '-20% 0px -60% 0px',
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        navItems.forEach(item => {
+                            item.classList.remove('text-brand', 'border-brand', 'font-bold');
+                            item.classList.add('text-slate-600', 'border-transparent');
+                            if (item.getAttribute('href') === '<?= BASE_URL ?>/#' + id) {
+                                item.classList.add('text-brand', 'border-brand', 'font-bold');
+                                item.classList.remove('text-slate-600', 'border-transparent');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => observer.observe(section));
+
+            // Gestion du clic pour mise à jour immédiate
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    navItems.forEach(nav => {
+                        nav.classList.remove('text-brand', 'border-brand', 'font-bold');
+                        nav.classList.add('text-slate-600', 'border-transparent');
+                    });
+                    this.classList.add('text-brand', 'border-brand', 'font-bold');
+                    this.classList.remove('text-slate-600', 'border-transparent');
+                });
+            });
+        });
+    </script>
 </body>
 </html>
