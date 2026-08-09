@@ -7,6 +7,7 @@
 ## En Cours (Doing)
 
 ## Terminé (Done)
+- [x] Affinement UI/UX : Simplification du menu (Option 2), intégration de la police Plus Jakarta Sans, optimisation de l'accessibilité (contraste), et ajustement des boutons de réseaux sociaux.
 - [x] Refonte de l'architecture en mode One-Page (Fusion du contact dans l'accueil, intégration des icônes SVG premium, mise à jour des projets GitHub).
 - [x] Refonte visuelle complète V1 (Design "Premium", Timeline CV, composant projets, barre sociale fixe).
 - [x] Création et intégration des pages légales (Mentions Légales).

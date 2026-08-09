@@ -189,9 +189,33 @@ function handle_home_page(PDO $pdo): void {
             'period' => 'Sept. 2011 - Juin 2013'
         ]
     ];
+    
+    $certifications = [
+        [
+            'title' => 'PHP (8.5)',
+            'issuer' => 'Dyma',
+            'duration' => '32 heures',
+            'date' => '24 mai 2026',
+            'icon' => 'php'
+        ],
+        [
+            'title' => 'HTML & CSS (5 / 3)',
+            'issuer' => 'Dyma',
+            'duration' => '46 heures',
+            'date' => '26 mai 2026',
+            'icon' => 'html5'
+        ],
+        [
+            'title' => 'Git (2.51)',
+            'issuer' => 'Dyma',
+            'duration' => '9 heures',
+            'date' => '11 juin 2026',
+            'icon' => 'git'
+        ]
+    ];
 
     // On passe les variables à la vue
-    $page_title = "Ernest Patrick SEWADE | Développeur Web PHP / Symfony";
+    $page_title = "Portfolio d'Ernest Patrick SEWADE | Développeur Web PHP / Symfony";
     require_once BASE_PATH . '/templates/pages/home.php';
 }
 

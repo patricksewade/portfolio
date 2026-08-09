@@ -36,10 +36,10 @@ function render_project_card(array $project): void {
         
         <div class="flex flex-wrap gap-2 mt-auto pt-4 border-t border-slate-50">
             <?php if (!empty($project['github_url']) && $project['github_url'] !== '#'): ?>
-                <a href="<?= e($project['github_url']) ?>" target="_blank" class="flex-1 px-4 py-2 bg-slate-900 text-white text-sm font-semibold rounded-lg hover:bg-slate-800 transition-colors text-center">Code source</a>
+                <a href="<?= e($project['github_url']) ?>" target="_blank" class="flex-1 px-4 py-2 bg-slate-900 text-white text-sm font-display font-semibold tracking-wide rounded-lg hover:bg-slate-800 transition-colors text-center">Code source</a>
             <?php endif; ?>
             <?php if (!empty($project['live_demo_url']) && $project['live_demo_url'] !== '#'): ?>
-                <a href="<?= e($project['live_demo_url']) ?>" target="_blank" class="flex-1 px-4 py-2 bg-brand text-white text-sm font-semibold rounded-lg hover:bg-brand/90 transition-colors shadow-sm text-center">Visiter</a>
+                <a href="<?= e($project['live_demo_url']) ?>" target="_blank" class="flex-1 px-4 py-2 bg-brand text-white text-sm font-display font-semibold tracking-wide rounded-lg hover:bg-brand/90 transition-colors shadow-sm text-center">Visiter</a>
             <?php endif; ?>
         </div>
     </div>
@@ -51,7 +51,7 @@ function render_project_card(array $project): void {
  */
 function render_button(string $label, string $type = 'submit', string $extra_classes = '', string $icon_svg = ''): void {
     ?>
-    <button type="<?= e($type) ?>" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-brand text-white font-semibold rounded-lg hover:bg-brand/90 transition-colors shadow-sm <?= e($extra_classes) ?>">
+    <button type="<?= e($type) ?>" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-brand text-white font-display font-semibold tracking-wide rounded-lg hover:bg-brand/90 transition-colors shadow-sm <?= e($extra_classes) ?>">
         <?php if ($icon_svg): ?>
             <?= $icon_svg ?>
         <?php endif; ?>
@@ -156,6 +156,39 @@ function render_education_timeline(array $edu): void {
                         <svg class="w-4 h-4 mr-2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
                         <?= e($edu['school']) ?> • <?= e($edu['location']) ?>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php
+}
+
+/**
+ * Affiche une carte de certification.
+ */
+function render_certification_card(array $cert): void {
+    // URL de l'icône via CDN SimpleIcons
+    $icon_url = "https://cdn.simpleicons.org/{$cert['icon']}/475569";
+    ?>
+    <div class="bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 group hover:-translate-y-1">
+        <div class="flex items-start gap-5">
+            <div class="w-14 h-14 rounded-xl bg-slate-50 flex items-center justify-center flex-shrink-0 border border-slate-100 group-hover:scale-110 group-hover:border-brand/30 transition-all duration-300">
+                <img src="<?= e($icon_url) ?>" alt="<?= e($cert['title']) ?>" class="w-8 h-8 opacity-80 group-hover:opacity-100 transition-opacity">
+            </div>
+            <div class="flex-1">
+                <h3 class="text-xl font-bold text-slate-800 font-display mb-1 group-hover:text-brand transition-colors"><?= e($cert['title']) ?></h3>
+                <div class="text-sm font-semibold text-slate-600 mb-2">
+                    Délivré par <span class="text-brand"><?= e($cert['issuer']) ?></span>
+                </div>
+                <div class="flex items-center gap-4 text-xs font-medium text-slate-500 mt-3 pt-3 border-t border-slate-100">
+                    <span class="flex items-center gap-1.5">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <?= e($cert['duration']) ?>
+                    </span>
+                    <span class="flex items-center gap-1.5">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <?= e($cert['date']) ?>
+                    </span>
                 </div>
             </div>
         </div>

@@ -7,10 +7,10 @@ require_once BASE_PATH . '/includes/utils/smtp_socket.php';
 function handle_contact_post(PDO $pdo): void {
     require_valid_csrf();
     
-    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $name = trim(strip_tags((string)($_POST['name'] ?? '')));
     $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-    $subject = filter_input(INPUT_POST, 'subject', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $content = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $subject = trim(strip_tags((string)($_POST['subject'] ?? '')));
+    $content = trim(strip_tags((string)($_POST['content'] ?? '')));
     
     if (!$name || !$email || !$subject || !$content) {
         $_SESSION['flash_error'] = "Veuillez remplir tous les champs correctement avec une adresse email valide.";
