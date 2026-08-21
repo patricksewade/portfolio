@@ -9,7 +9,7 @@ if (!function_exists('e')) {
      * Helper global pour échapper les chaînes dans les vues.
      * Délègue à SecurityService::escape().
      */
-    function e(?string $value): string
+    function e(mixed $value): string
     {
         return SecurityService::escape($value);
     }

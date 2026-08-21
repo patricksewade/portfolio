@@ -8,6 +8,7 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 use App\Config\Database;
 use App\Config\EnvLoader;
 use App\Controller\AdminController;
+use App\Controller\AdminProjectController;
 use App\Controller\AuthController;
 use App\Controller\ContactController;
 use App\Controller\HomeController;
@@ -55,6 +56,7 @@ $homeController    = new HomeController($projectRepository, $viewRenderer);
 $authController    = new AuthController($adminRepository, $viewRenderer, $securityService);
 $contactController = new ContactController($messageRepository, $smtpMailer, $viewRenderer, $securityService);
 $adminController   = new AdminController($projectRepository, $messageRepository, $viewRenderer, $securityService);
+$adminProjectController = new AdminProjectController($projectRepository, $viewRenderer, $securityService);
 
 // ─── 7. Enregistrement des routes ─────────────────────────────────────────────
 $router = new Router();
@@ -68,6 +70,12 @@ $router->addRoute('POST', '/contact',            ContactController::class, 'proc
 $router->addRoute('GET',  '/admin/dashboard',    AdminController::class,   'dashboard');
 $router->addRoute('POST', '/admin/message/read', AdminController::class,   'markMessageRead');
 
+$router->addRoute('GET',  '/admin/projects/create', AdminProjectController::class, 'create');
+$router->addRoute('POST', '/admin/projects/create', AdminProjectController::class, 'create');
+$router->addRoute('GET',  '/admin/projects/edit',   AdminProjectController::class, 'edit');
+$router->addRoute('POST', '/admin/projects/edit',   AdminProjectController::class, 'edit');
+$router->addRoute('POST', '/admin/projects/delete', AdminProjectController::class, 'delete');
+
 // ─── 8. Dispatch + envoi de la réponse ────────────────────────────────────────
 $request = Request::fromGlobals();
 
@@ -76,6 +84,7 @@ $controllers = [
     AuthController::class    => $authController,
     ContactController::class => $contactController,
     AdminController::class   => $adminController,
+    AdminProjectController::class => $adminProjectController,
 ];
 
 $response = $router->dispatch($request, $controllers);

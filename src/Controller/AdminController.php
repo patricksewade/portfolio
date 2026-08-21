@@ -39,13 +39,23 @@ final class AdminController
         $messages = array_map(fn($m) => $m->toArray(), $messagesObjects);
         $projects = array_map(fn($p) => $p->toArray(), $projectsObjects);
 
+        $totalProjects = count($projects);
+        $featuredProjects = count(array_filter($projects, fn($p) => $p['is_featured'] === true));
+        $totalMessages = count($messages);
+        $unreadMessages = count(array_filter($messages, fn($m) => $m['status'] === 'unread'));
+
         return $this->viewRenderer->renderResponse('pages/admin_dashboard.php', [
             'page_title'       => 'Tableau de bord - Administration',
             'messages'         => $messages,
             'projects'         => $projects,
+            'stats'            => [
+                'total_projects'    => $totalProjects,
+                'featured_projects' => $featuredProjects,
+                'total_messages'    => $totalMessages,
+                'unread_messages'   => $unreadMessages,
+            ],
             'admin_username'   => $_SESSION['admin_username'] ?? 'Admin',
-            'flash_success'    => $this->consumeFlash('flash_success'),
-            'flash_error'      => $this->consumeFlash('flash_error'),
+            'csrf_token'       => $this->securityService->generateCsrfToken(),
         ]);
     }
 

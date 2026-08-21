@@ -15,6 +15,7 @@ final class Request
      * @param array<string, mixed>   $body         Corps POST
      * @param array<string, string>  $server       Variables serveur
      * @param array<string, mixed>   $session      Données de session
+     * @param array<string, mixed>   $files        Données de fichiers uploadés
      */
     public function __construct(
         private readonly string $method,
@@ -23,6 +24,7 @@ final class Request
         private readonly array $body,
         private readonly array $server,
         private readonly array $session,
+        private readonly array $files = [],
     ) {}
 
     /**
@@ -40,6 +42,7 @@ final class Request
             body: $_POST,
             server: $_SERVER,
             session: $_SESSION,
+            files: $_FILES,
         );
     }
 
@@ -59,6 +62,32 @@ final class Request
     public function getBodyParam(string $key, string $default = ''): string
     {
         return isset($this->body[$key]) ? (string) $this->body[$key] : $default;
+    }
+
+    /**
+     * Retourne un paramètre GET ou une valeur par défaut.
+     */
+    public function getQueryParam(string $key, string $default = ''): string
+    {
+        return isset($this->queryParams[$key]) ? (string) $this->queryParams[$key] : $default;
+    }
+
+    /**
+     * Retourne un tableau de fichier uploadé ou null si absent.
+     * @return array<string, mixed>|null
+     */
+    public function getFile(string $key): ?array
+    {
+        return $this->files[$key] ?? null;
+    }
+
+    /**
+     * Retourne tous les fichiers.
+     * @return array<string, mixed>
+     */
+    public function getFiles(): array
+    {
+        return $this->files;
     }
 
     /**

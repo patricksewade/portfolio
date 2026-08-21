@@ -19,12 +19,12 @@ final class SecurityService
      * Cette fonction globale e() est conservée en tant que méthode statique
      * pour une utilisation pratique dans les vues.
      */
-    public static function escape(?string $value): string
+    public static function escape(mixed $value): string
     {
         if ($value === null) {
             return '';
         }
-        return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        return htmlspecialchars((string)$value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
 
     /**

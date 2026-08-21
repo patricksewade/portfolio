@@ -25,112 +25,7 @@ final class HomeController
      */
     public function index(Request $request): Response
     {
-        $dbProjectsObjects = $this->projectRepository->findAll();
-        $dbProjects = array_map(fn($p) => $p->toArray(), $dbProjectsObjects);
-
-
-        // Projets statiques (placeholders non encore en BDD)
-        $staticProjects = [
-            [
-                'is_featured'  => true,
-                'title'        => 'KLG-Caisse',
-                'description'  => "Logiciel de caisse qui va à l'essentiel. Migration complète d'une application de caisse vers une architecture POO.",
-                'tech_stack'   => 'PHP 8, Symfony',
-                'github_url'   => '',
-                'live_demo_url' => '',
-                'image_url'    => '',
-            ],
-            [
-                'is_featured'  => true,
-                'title'        => 'Garage Flow',
-                'description'  => 'Application Web en PHP natif (MVC procédural) de gestion de devis automobiles avec panier en session, sécurisation des formulaires et persistance des données en JSON.',
-                'tech_stack'   => 'PHP, MVC, JSON, Tailwind CSS',
-                'github_url'   => 'https://github.com/patricksewade/garage-flow',
-                'live_demo_url' => '',
-                'image_url'    => '',
-            ],
-            [
-                'is_featured'  => true,
-                'title'        => 'OBD-Reader',
-                'description'  => 'Script CLI en PHP natif pour analyser et formater les codes défauts (DTC) issus de diagnostics automobiles OBD-II.',
-                'tech_stack'   => 'PHP, CLI, OBD-II',
-                'github_url'   => 'https://github.com/patricksewade/obd-reader',
-                'live_demo_url' => '',
-                'image_url'    => '',
-            ],
-            [
-                'is_featured'  => true,
-                'title'        => 'API Books Redis',
-                'description'  => "Développement d'une API REST de gestion de livres (TP) avec implémentation de Redis pour l'optimisation des performances et la gestion du cache.",
-                'tech_stack'   => 'PHP, Redis, API REST',
-                'github_url'   => 'https://github.com/patricksewade/api_books_redis',
-                'live_demo_url' => '',
-                'image_url'    => '',
-            ],
-            [
-                'is_featured'  => false,
-                'title'        => 'PROMADE',
-                'description'  => 'Description et fonctionnalités à venir pour le projet PROMADE.',
-                'tech_stack'   => 'À définir',
-                'github_url'   => '',
-                'live_demo_url' => '',
-                'image_url'    => '',
-            ],
-            [
-                'is_featured'  => false,
-                'title'        => 'MAPCOM Solutions Informatiques',
-                'description'  => 'Projet et réalisations techniques au sein de MAPCOM.',
-                'tech_stack'   => 'À définir',
-                'github_url'   => '',
-                'live_demo_url' => '',
-                'image_url'    => '',
-            ],
-            [
-                'is_featured'  => false,
-                'title'        => 'MAHUTON SMART GROUP',
-                'description'  => 'Our expertise at your service. Description des livrables.',
-                'tech_stack'   => 'À définir',
-                'github_url'   => '',
-                'live_demo_url' => '',
-                'image_url'    => '',
-            ],
-            [
-                'is_featured'  => false,
-                'title'        => 'Santé Maternité & Enfance',
-                'description'  => "Plateforme ou solution dédiée à l'accompagnement et la santé mère-enfant.",
-                'tech_stack'   => 'À définir',
-                'github_url'   => '',
-                'live_demo_url' => '',
-                'image_url'    => '',
-            ],
-            [
-                'is_featured'  => false,
-                'title'        => 'EITP',
-                'description'  => "École d'Initiation Théologique et Pastorale. Création du portail.",
-                'tech_stack'   => 'À définir',
-                'github_url'   => '',
-                'live_demo_url' => '',
-                'image_url'    => '',
-            ],
-            [
-                'is_featured'  => false,
-                'title'        => '2SND Technologies',
-                'description'  => 'Solutions et développement pour 2SND Technologies.',
-                'tech_stack'   => 'À définir',
-                'github_url'   => '',
-                'live_demo_url' => '',
-                'image_url'    => '',
-            ],
-            [
-                'is_featured'  => false,
-                'title'        => 'RGPH5-BÉNIN',
-                'description'  => "Recensement Général de la Population et de l'Habitation : \"Je compte pour l'avenir\".",
-                'tech_stack'   => 'À définir',
-                'github_url'   => '',
-                'live_demo_url' => '',
-                'image_url'    => '',
-            ],
-        ];
+        $projects = array_map(fn($p) => $p->toArray(), $this->projectRepository->findAll());
 
         $profileSummary = "Diplômé d'un Master 2 Architecte Digital et fort de 9 ans de pratique PHP (architecture POO, bases de données, ERP, bonnes pratiques modernes), j'applique aujourd'hui ces compétences fondamentales à l'écosystème Symfony. Autonome et rigoureux, je souhaite m'investir pleinement dans le développement, l'optimisation et la pérennisation de vos applications web.";
 
@@ -237,7 +132,7 @@ final class HomeController
 
         return $this->viewRenderer->renderResponse('pages/home.php', [
             'page_title'      => "Portfolio d'Ernest Patrick SEWADE | Développeur Web PHP / Symfony",
-            'projects'        => array_merge($staticProjects, $dbProjects),
+            'projects'        => $projects,
             'profile_summary' => $profileSummary,
             'skills'          => $skills,
             'experiences'     => $experiences,

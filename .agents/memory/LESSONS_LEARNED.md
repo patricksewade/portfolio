@@ -4,16 +4,16 @@ _Ce fichier consigne les erreurs passées de l'IA pour éviter leur répétition
 **RÈGLE ABSOLUE : Maximum 15 puces. Si dépassement, synthétiser ou archiver.**
 
 ## Erreurs de Code / Logique à ne plus reproduire
-- Ne jamais proposer un fichier `env.php` pour la configuration secrète. Le fichier `.env` reste la norme absolue et peut être parsé avec `parse_ini_file()`.
-- **Scripts d'installation** : Ne pas placer les scripts d'installation en dehors du `Document Root` (`/public`), ils renverront une erreur 404. Les placer dans `/public` temporairement puis les supprimer de façon sécurisée.
-- UI/UX : Conserver l'alignement à gauche pour les blocs de texte/formulaires même si le conteneur est centré (ne pas forcer `text-center`/`justify-center` partout).
-- **Accessibilité (A11Y)** : Éviter orange/jaune vif (`#f59d21`) sur fond blanc (ratio < 3:1, invalide WCAG). Assombrir la teinte (ex: `#d97706`) pour valider les normes tout en gardant l'éclat.
-- **Mise en Page** : Éviter le "Bento-style" avec marges négatives sans CSS Grid robuste. Privilégier des grilles claires ou `flex-col`.
-- **Sécurité Git / Secrets** : `.env` jamais commité. En cas de fuite, `git rm --cached` ne suffit pas — purger l'historique complet (BFG Repo-Cleaner ou `git filter-branch`).
-- **OOP MVC — Singleton PDO banni** : Ne jamais utiliser le pattern `static $pdo = null` (singleton procédural). Utiliser une **factory** (`Database::createConnection()`) et injecter le PDO via le constructeur des Repository.
-- **OOP MVC — Superglobales interdites en logique** : `$_GET`, `$_POST`, `$_SERVER`, `$_SESSION` ne doivent être accédés que dans `Request::fromGlobals()`. Toute logique métier ou contrôleur doit recevoir un objet `Request` immutable.
-- **OOP MVC — `echo`/`header()` hors Response** : Aucun contrôleur ni service ne doit appeler `echo` ou `header()` directement. Tout passe par `Response->send()` (seul point de sortie HTTP).
-- **Compatibilité des Vues lors d'une Migration OOP** : Pour éviter de réécrire toutes les vues (qui attendent des tableaux/fonctions), ajouter une méthode `toArray()` sur les entités et créer des polyfills procéduraux (ex: `e()`, `is_admin()`) dans `src/helpers.php` qui délèguent aux nouveaux services statiques.
+- **Configuration & Secrets** : Ne jamais proposer un fichier `env.php` pour la configuration secrète. Le fichier `.env` reste la norme absolue et est parsé avec `Config\EnvLoader`. Ne jamais commiter `.env` (purger l'historique complet avec BFG en cas de fuite).
+- **Scripts d'installation** : Ne pas placer les scripts d'installation en dehors du `Document Root` (`/public`) sous peine de 404. Les placer dans `/public` temporairement puis les supprimer de façon sécurisée.
+- **UI/UX & Accessibilité** : Conserver l'alignement à gauche pour les blocs de texte/formulaires même si le conteneur est centré. Éviter orange/jaune vif (`#f59d21`) sur fond blanc (ratio < 3:1 WCAG, utiliser `#d97706`). Éviter Bento-style avec marges négatives sans CSS Grid.
+- **UI/UX Dashboards Admin** : Ne jamais écraser une table de données complexe dans une colonne restreinte. Privilégier un layout pleine largeur avec indicateurs clés (KPIs) en haut.
+- **OOP MVC — Isolation & Flux HTTP** : Factory PDO injectée dans les Repositories (pas de singleton PDO). Superglobales encapsulées dans `Request` immutable. `Response->send()` est l'unique point de sortie (`echo`/`header()` bannis des contrôleurs).
+- **OOP MVC — Rétrocompatibilité Vues** : Ajouter `toArray()` sur les entités et utiliser des polyfills procéduraux (`e()`, `is_admin()`) dans `src/helpers.php` pour découpler les vues sans réécriture massive.
+- **Rendu des Chemins & URLs** : Stocker uniquement le chemin relatif en BDD (ex: `uploads/projects/image.jpg`) et préfixer par `BASE_URL` dans les vues/composants.
+- **Cycle de vie des Fichiers & Orphelins** : Lors du remplacement d'une image ou de la suppression d'un projet, supprimer physiquement le fichier sur disque avec `unlink()` pour éviter l'accumulation de fichiers orphelins.
+- **Gestion des Erreurs d'Upload & Flash messages** : Encapsuler l'upload d'images dans un `try/catch (\Exception $e)` côté contrôleur pour intercepter les rejets (taille > 2 Mo, formats invalides) et afficher des messages d'erreur clairs via les flash messages.
+- **Sécurité CSRF sur Actions Sensibles** : Ne jamais omettre la génération et la propagation du token CSRF (`SecurityService::generateCsrfToken()`) dans les formulaires d'actions unitaires (suppression de messages, de projets, etc.).
 
 ## Pièges de l'Environnement (WAMP / Windows)
 - **Génération Markdown via PowerShell** : `Set-Content` avec `here-strings` en guillemets doubles (`@"`) interprète les backticks (`) comme échappements. Utiliser des `here-strings` à guillemets simples (`@'`) ou l'outil `write_to_file`.

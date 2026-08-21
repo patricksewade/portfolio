@@ -64,7 +64,7 @@ final class Project
             'id'            => $this->id,
             'title'         => $this->title,
             'description'   => $this->description,
-            'tech_stack    ' => $this->techStack,
+            'tech_stack'    => $this->techStack,
             'is_featured'   => $this->isFeatured,
             'github_url'    => $this->githubUrl,
             'live_demo_url' => $this->liveDemoUrl,

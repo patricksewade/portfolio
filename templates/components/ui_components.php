@@ -17,7 +17,7 @@ function render_project_card(array $project): void {
         <!-- Espace Image / Logo -->
         <div class="w-full h-48 mb-5 rounded-xl bg-slate-50 flex items-center justify-center border border-slate-100 overflow-hidden group-hover:border-brand/30 transition-colors relative">
             <?php if ($imageUrl): ?>
-                <img src="<?= e($imageUrl) ?>" alt="<?= e($project['title']) ?>" class="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-110">
+                <img src="<?= BASE_URL . e($imageUrl) ?>" alt="<?= e($project['title']) ?>" class="w-full h-full object-cover p-0 transition-transform duration-500 group-hover:scale-110">
             <?php else: ?>
                 <!-- Placeholder générique premium -->
                 <div class="text-slate-300 flex flex-col items-center">
