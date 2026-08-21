@@ -1,39 +1,39 @@
 # Architecture Actuelle
 
 ## 1. Paradigme & Standards
-- PHP 8.3.27 maximum (POO pure sans framework).
-- Architecture MVC stricte orientée objet.
-- Respect des principes SOLID.
-- Fichier `.env` pour la configuration, parsé nativement sans librairie.
+- PHP 8.3 max — OOP pure, architecture **MVC stricte sans framework**.
+- Autoloading **PSR-4** via Composer : namespace `App\` → `src/`.
+- Respect des principes SOLID ; injection manuelle de dépendances dans `public/index.php`.
+- Fichier `.env` parsé par `Config\EnvLoader` (classe statique, sans librairie).
 
-## 2. Arborescence Stricte & Design System
-- `/public` : Point d'entrée unique (`index.php`), `.htaccess`, assets.
-- `/config` : Constantes globales, `env_loader.php` (lecture du `.env`), `db_connection.php`.
-- `/includes` : `router.php`, `/controllers`, `/dal`, `/utils` (sécurité, SMTP).
-- `/templates` : Front-office géré en mode **One-Page** via `home.php`. Utilisation de TailwindCSS en mode "Premium" (effets de verre, ombres, icônes SVG intégrées).
-- `/templates/components` : `ui_components.php` (fonctions d'affichage PHP pour centraliser le code UI répétitif).
+## 2. Arborescence & Couches MVC
+- `/public` : Point d'entrée unique `index.php` (bootstrap + injection + dispatch), `.htaccess`, assets.
+- `/src/Core, Http & Config` : Infrastructures techniques (`Router`, `ViewRenderer`, `Request`, `Response`, `EnvLoader`, `Database`). `src/helpers.php` contient les polyfills procéduraux (`e()`, `is_admin()`).
+- `/src/Model & Repository` : Entités POO strictes (avec `toArray()` pour compatibilité vues) et accès aux données via PDO injecté.
+- `/src/Service` : Logique transverse (`SecurityService` statique, `SmtpMailer` OOP).
+- `/src/Controller` : Actions métier retournant via `Response->send()`. La route `/logout` accepte `GET` pour rétrocompatibilité.
+- `/templates` : Vues PHP classiques (variables injectées via `extract()` dans `ViewRenderer`). TailwindCSS "Premium".
 
-## 3. Base de Données & Migrations
+## 3. Base de Données & Accès aux Données
 - MySQL 8 / MariaDB 11.4 via PDO.
 - Tables : `admin`, `projects`, `messages`.
-- Pas d'ORM. Requêtes SQL préparées obligatoires.
+- Pas d'ORM. `prepare()` obligatoire partout (plus de `$pdo->query()` non préparé).
 
 ## 4. Sécurité & Authentification
-- Sécurité XSS : Fonction globale `e()` (htmlspecialchars avec `ENT_QUOTES | ENT_SUBSTITUTE`).
-- Sécurité CSRF : Jeton généré et validé manuellement (via `hash_equals`).
-- Mots de passe hachés via `password_hash()`.
-- Cookies de session sécurisés (HTTPOnly, Secure, SameSite=Strict).
-- Sécurité des secrets : Le fichier `.env` contenant les clés et mots de passe doit être strictement ignoré de Git.
+- XSS : `SecurityService::escape()` (méthode statique, accessible depuis les vues).
+- CSRF : `SecurityService::generateCsrfToken()` / `verifyCsrfToken()` via `hash_equals`.
+- Auth : `Admin::verifyPassword()` encapsule `password_verify()` ; `__serialize()` empêche la fuite du hash.
+- Cookies de session : HTTPOnly, Secure, SameSite=Strict.
+- Secrets : `.env` jamais commité (purge historique Git si fuite accidentelle).
 
 ## 5. API Externes
-- Envoi d'emails : Utilisation stricte des `Fsocket functions` PHP (`stream_socket_client`) pour dialoguer avec un serveur SMTP (Brevo en prod, Mailtrap en local). Aucune librairie Composer.
+- Emails : `SmtpMailer` (OOP) wrappant `smtp_socket.php` via `stream_socket_client`. Brevo en prod, Mailtrap en local.
 
-## 6. Évolutions Prévues
-- V1 : MVC Orienté Objet pur (sans framework).
-- V2 : Migration vers le framework Symfony.
+## 6. Évolution & Roadmap
+- **V1 OOP MVC — ✅ ACCOMPLIE** : Migration complète vers une architecture POO stricte PSR-4. Le legacy procédural (`/includes`) a été totalement supprimé.
+- **V2** : Migration vers Symfony envisagée.
 
 ## 7. Architecture Agentique (Antigravity 2.0)
-- **Personnalisation & Outils** : Migration vers les standards Antigravity (Workspace Rules, Skills, Subagents, Hooks).
-- **Gestion des Tâches** : Suppression de `ACTIVE_TASKS.md` (remplacé par les Artifacts natifs Antigravity) et optimisation de `AGENTS.md` (suppression des `@mentions` coûteuses).
-- **Mémoire & Documentation** : Compétence `project-memory` (historique à la demande) et sous-agent `archivist` pour les mises à jour en arrière-plan.
-- **Règles & Workflow Git** : Règle d'espace de travail `git-conventions.md` (Conventional Commits) bloquée par un hook (`PreToolUse` via `hooks.json` et `check_commit.php`). Compétence `git-release` couplée au sous-agent `pr-reviewer` pour l'automatisation CI/CD locale.
+- **Personnalisation & Outils** : Workspace Rules, Skills, Subagents, Hooks (standards Antigravity).
+- **Mémoire & Documentation** : Compétence `project-memory` + sous-agent `archivist` pour mises à jour en arrière-plan.
+- **Workflow Git** : Règle `git-conventions.md` (Conventional Commits) + hook `check_commit.php` + skill `git-release` + sous-agent `pr-reviewer`.
