@@ -1,0 +1,17 @@
+﻿{
+  "commit-guard": {
+    "enabled": true,
+    "PreToolUse": [
+      {
+        "matcher": "run_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "php .agents/scripts/check_commit.php",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -5,8 +5,9 @@ name: Règles Globales du Projet
 
 # Directives de Développement
 
-- Avant de proposer un plan d'implémentation ou de coder, tu DOIS lire l'état actuel de l'architecture dans le fichier `@.agents/memory/ARCHITECTURE.md` ET tes propres leçons apprises dans `@.agents/memory/LESSONS_LEARNED.md`. Il est impératif de ne pas répéter les erreurs consignées dans ce dernier.
-- Si tu as besoin d'un historique technique très ancien, et seulement si on te le demande, réfère-toi au dossier `@.agents/rules/archive/`.
+- **Contrainte de Version PHP** : La version maximale supportée par le projet est strictement **PHP 8.3.27**. Il est formellement interdit d'utiliser des syntaxes ou fonctionnalités exclusives à PHP 8.4+ (ex: *Property Hooks*, *Asymmetric Visibility*, `array_find()`, etc.).
+- L'historique et l'architecture du projet ne sont plus chargés automatiquement. Avant de proposer un plan d'implémentation ou de modifier l'architecture, tu DOIS utiliser ta compétence (Skill) `project-memory` pour lire l'état actuel du projet. Il est impératif de ne pas répéter les erreurs consignées dans les leçons apprises.
+- Si tu as besoin d'un historique technique très ancien, et seulement si on te le demande, réfère-toi au dossier `.agents/rules/archive/`.
 
 # Hygiène et Sécurité du Dépôt (Nettoyage Obligatoire)
 
@@ -18,6 +19,6 @@ name: Règles Globales du Projet
 
 - L'historique des conversations ne doit jamais polluer le contexte.
 - Lorsqu'une tâche est validée et terminée, n'invente pas de résumé dans le chat.
-- À la fin de chaque tâche validée, utilise exclusivement le workflow `/commit_memory` pour mettre à jour la documentation du projet.
+- À la fin de chaque tâche majeure validée, utilise l'outil `invoke_subagent` pour invoquer le sous-agent `archivist`. Il se chargera en arrière-plan de mettre à jour la mémoire du projet sans polluer le contexte de notre conversation.
 
 # Accès Base de Données (MCP)
