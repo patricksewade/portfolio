@@ -1,8 +1,9 @@
 # Architecture Actuelle
 
 ## 1. Paradigme & Standards
-- PHP 8.3.27 maximum (procédural pur, aucune POO excepté PDO).
-- Approche MVC procédural (Routing centralisé, Contrôleurs sans vue, DAL sans requêtes dans les contrôleurs).
+- PHP 8.3.27 maximum (POO pure sans framework).
+- Architecture MVC stricte orientée objet.
+- Respect des principes SOLID.
 - Fichier `.env` pour la configuration, parsé nativement sans librairie.
 
 ## 2. Arborescence Stricte & Design System
@@ -28,9 +29,8 @@
 - Envoi d'emails : Utilisation stricte des `Fsocket functions` PHP (`stream_socket_client`) pour dialoguer avec un serveur SMTP (Brevo en prod, Mailtrap en local). Aucune librairie Composer.
 
 ## 6. Évolutions Prévues
-- V1 : MVC Procédural.
-- V2 : Refactoring complet vers la Programmation Orientée Objet (POO).
-- V3 : Migration vers le framework Symfony.
+- V1 : MVC Orienté Objet pur (sans framework).
+- V2 : Migration vers le framework Symfony.
 
 ## 7. Architecture Agentique (Antigravity 2.0)
 - **Personnalisation & Outils** : Migration vers les standards Antigravity (Workspace Rules, Skills, Subagents, Hooks).
