@@ -1,0 +1,25 @@
+# 1. Fichiers de configuration et d'environnement (SECRETS)
+.env
+.env.*
+!.env.example
+
+# 2. Fichiers de logs et d'erreurs
+*.log
+error_log
+php_errors.log
+
+# 3. Dumps et sauvegardes BDD locales
+*.sql
+*.sqlite
+*.bak
+
+# 4. Fichiers systèmes OS
+.DS_Store
+Thumbs.db
+
+# 5. IDEs et Outils de développement
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
