@@ -133,6 +133,7 @@ final class HomeController
         return $this->viewRenderer->renderResponse('pages/home.php', [
             'page_title'      => "Portfolio d'Ernest Patrick SEWADE | Développeur Web PHP / Symfony",
             'projects'        => $projects,
+            'projectCount'    => count($projects),
             'profile_summary' => $profileSummary,
             'skills'          => $skills,
             'experiences'     => $experiences,
