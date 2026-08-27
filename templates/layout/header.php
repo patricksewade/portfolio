@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Portfolio de Ernest Patrick SEWADE, Développeur Web.">
+    <meta name="description" content="Portfolio d'Ernest Patrick SEWADE, Développeur Web Backend PHP / Symfony.">
     <title><?= e($page_title ?? 'Portfolio') ?></title>
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="<?= BASE_URL ?>/favicon.png">

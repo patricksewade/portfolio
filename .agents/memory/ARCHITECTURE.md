@@ -11,8 +11,8 @@
 - `/src/Core, Http & Config` : Infrastructures techniques (`Router`, `ViewRenderer`, `Request`, `Response`, `EnvLoader`, `Database`). `src/helpers.php` contient les polyfills procéduraux (`e()`, `is_admin()`).
 - `/src/Model & Repository` : Entités POO strictes (avec `toArray()` pour compatibilité vues) et accès aux données via PDO injecté.
 - `/src/Service` : Logique transverse (`SecurityService` statique, `SmtpMailer` OOP).
-- `/src/Controller` : Actions métier retournant via `Response->send()`. `AdminController` prépare les KPIs du dashboard et injecte les tokens CSRF. `AdminProjectController` gère l'administration dynamique des projets (CRUD complet, pattern PRG, cycle de vie upload, messages flash).
-- `/templates` : Vues PHP classiques (variables injectées via `extract()` dans `ViewRenderer`). TailwindCSS "Premium". Le tableau de bord admin utilise une disposition pleine largeur avec des indicateurs clés (KPI) et affichage des messages flash.
+- `/src/Controller` : Actions métier retournant via `Response->send()`. `HomeController` injecte les compteurs et données dynamiques depuis les repositories. `AdminController` prépare les KPIs du dashboard et injecte les tokens CSRF. `AdminProjectController` gère l'administration dynamique des projets (CRUD complet, pattern PRG, cycle de vie upload, messages flash).
+- `/templates` : Vues PHP modulaires (TailwindCSS "Premium" sombre). Header enrichi (liens sociaux, CTA CV), composant 'Back to Top' interactif (Vanilla JS) dans le footer, page mentions légales restructurée, formulaires avec indicateurs d'accessibilité.
 
 ## 3. Base de Données & Accès aux Données
 - MySQL 8 / MariaDB 11.4 via PDO.
@@ -33,6 +33,7 @@
 
 ## 6. Évolution & Roadmap
 - **V1 OOP MVC — ✅ ACCOMPLIE** : Migration complète vers une architecture POO stricte PSR-4. Le legacy procédural (`/includes`) a été totalement supprimé.
+- **Améliorations UI/UX & Dynamisation — ✅ ACCOMPLIE** : Jalon `feat/portfolio-enhancements` (dynamisation compteur projets, header enrichi avec réseaux sociaux et CV, mentions légales premium, Back to Top interactif).
 - **V2** : Migration vers Symfony envisagée.
 
 ## 7. Architecture Agentique (Antigravity 2.0)

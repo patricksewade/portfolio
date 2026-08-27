@@ -48,7 +48,7 @@ require_once BASE_PATH . '/templates/layout/header.php';
                 <div>
                     <span class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Identité</span>
                     <strong class="text-slate-800 font-semibold text-base">Ernest Patrick SEWADE</strong>
-                    <span class="block text-slate-500 text-xs mt-0.5">Développeur Web PHP & Symfony</span>
+                    <span class="block text-slate-500 text-xs mt-0.5">Développeur Web Backend PHP & Symfony</span>
                 </div>
                 <div>
                     <span class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Directeur de la publication</span>

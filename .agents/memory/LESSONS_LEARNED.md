@@ -14,6 +14,7 @@ _Ce fichier consigne les erreurs passées de l'IA pour éviter leur répétition
 - **Cycle de vie des Fichiers & Orphelins** : Lors du remplacement d'une image ou de la suppression d'un projet, supprimer physiquement le fichier sur disque avec `unlink()` pour éviter l'accumulation de fichiers orphelins.
 - **Gestion des Erreurs d'Upload & Flash messages** : Encapsuler l'upload d'images dans un `try/catch (\Exception $e)` côté contrôleur pour intercepter les rejets (taille > 2 Mo, formats invalides) et afficher des messages d'erreur clairs via les flash messages.
 - **Sécurité CSRF sur Actions Sensibles** : Ne jamais omettre la génération et la propagation du token CSRF (`SecurityService::generateCsrfToken()`) dans les formulaires d'actions unitaires (suppression de messages, de projets, etc.).
+- **Dynamisation & Accessibilité Frontend** : Ne jamais coder en dur des métriques dynamiques (ex: compteur de projets) dans les vues alors qu'un repository existe. Systématiser l'accessibilité (`aria-required="true"`, `rel="noopener noreferrer"`) sur les formulaires et liens externes.
 
 ## Pièges de l'Environnement (WAMP / Windows)
 - **Génération Markdown via PowerShell** : `Set-Content` avec `here-strings` en guillemets doubles (`@"`) interprète les backticks (`) comme échappements. Utiliser des `here-strings` à guillemets simples (`@'`) ou l'outil `write_to_file`.

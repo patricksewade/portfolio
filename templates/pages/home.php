@@ -32,7 +32,7 @@ require_once BASE_PATH . '/templates/components/ui_components.php';
                 Ernest Patrick SEWADE
             </h1>
             <h2 class="text-2xl md:text-3xl font-bold text-slate-600 mb-6 flex items-center flex-wrap gap-x-2 gap-y-3">
-                Développeur Web <span class="text-brand">PHP</span>
+                Développeur Web Backend <span class="text-brand">PHP</span>
                 <div class="relative group flex items-center mx-1">
                     <img src="https://cdn.simpleicons.org/php/475569" alt="PHP" class="h-8 md:h-10 w-auto group-hover:scale-110 group-hover:opacity-100 opacity-90 transition-all duration-300">
                     <div class="absolute inset-0 bg-slate-400 rounded-full blur-md opacity-0 group-hover:opacity-20 transition-opacity"></div>
