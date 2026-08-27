@@ -1,29 +1,40 @@
-ï»¿# Changelog
+# Changelog
 
-Toutes les modifications notables apportÃ©es Ã  ce projet sont documentÃ©es dans ce fichier.
-Le format est basÃ© sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/) et respecte [Semantic Versioning](https://semver.org/lang/fr/).
+Toutes les modifications notables apportées à ce projet sont documentées dans ce fichier.
+Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/) et respecte [Semantic Versioning](https://semver.org/lang/fr/).
+
+## [2.0.0] - 2026-08-28
+
+### Ajouté (Features)
+- **Refactorisation Symfony 7.4 LTS** : Migration complète de l'architecture MVC maison vers le framework Symfony 7.4.
+- **ORM & Base de données** : Intégration de Doctrine ORM avec des entités fortement typées et l'utilisation de Data Transfer Objects (DTOs).
+- **Sécurité Symfony** : Utilisation du composant Security natif avec orm_login, ate_limiter et protections CSRF globales.
+- **Moteur de Templates Twig** : Conversion de 100% des anciennes vues PHP vers Twig, tout en préservant le design TailwindCSS.
+- **Service Emailing** : Migration du composant SMTP custom vers symfony/mailer.
+- **Qualité & Tests** : Mise en place de symfony/test-pack avec l'échafaudage de tests fonctionnels pour valider les routes principales.
 
 ## [1.1.0] - 2026-08-27
 
-### AjoutÃ© (Features)
+### Ajouté (Features)
 - **Gestion dynamique des projets (Admin)** : Module d'administration complet (CRUD) permettant d'ajouter, modifier et supprimer des projets directement depuis l'interface d'administration.
-- **Upload sÃ©curisÃ© d'images** : IntÃ©gration de `samayo/bulletproof` pour la gestion des images de projet (validation MIME, limitation Ã  2 Mo et suppression physique des orphelins).
-- **Navigation & RÃ©seaux sociaux** : Liens directs vers LinkedIn et GitHub intÃ©grÃ©s dans l'en-tÃªte (Header) ainsi qu'un bouton d'action premium pour le tÃ©lÃ©chargement direct du CV.
-- **Composant 'Back to Top'** : Bouton de retour en haut de page interactif avec dÃ©filement fluide et animations d'apparition au scroll.
-- **Mentions lÃ©gales premium** : Restructuration complÃ¨te de la page des mentions lÃ©gales au design dark glassmorphism.
-- **AccessibilitÃ© & Formulaires** : Ajout systÃ©matique des marqueurs de champs obligatoires et des attributs `aria-required="true"`.
+- **Upload sécurisé d'images** : Intégration de `samayo/bulletproof` pour la gestion des images de projet (validation MIME, limitation à 2 Mo et suppression physique des orphelins).
+- **Navigation & Réseaux sociaux** : Liens directs vers LinkedIn et GitHub intégrés dans l'en-tête (Header) ainsi qu'un bouton d'action premium pour le téléchargement direct du CV.
+- **Composant 'Back to Top'** : Bouton de retour en haut de page interactif avec défilement fluide et animations d'apparition au scroll.
+- **Mentions légales premium** : Restructuration complète de la page des mentions légales au design dark glassmorphism.
+- **Accessibilité & Formulaires** : Ajout systématique des marqueurs de champs obligatoires et des attributs `aria-required="true"`.
 
 ### Refactorisation (Refactoring & Architecture)
-- **Architecture OOP MVC stricte** : Migration complÃ¨te du code procÃ©dural vers une architecture OrientÃ©e Objet conforme PSR-4 (classes immuables `readonly`, namespace `App\`, conteneur / bootstrap propre).
-- **SÃ©curitÃ© renforcÃ©e** : Encapsulation des requÃªtes/rÃ©ponses HTTP (`Request`/`Response`), protection CSRF systÃ©matique sur toutes les actions critiques, sÃ©curisation XSS via `SecurityService`.
-- **Compteur de projets dynamique** : Remplacement des compteurs statiques par des donnÃ©es calculÃ©es en temps rÃ©el via le `ProjectRepository`.
+- **Architecture OOP MVC stricte** : Migration complète du code procédural vers une architecture Orientée Objet conforme PSR-4 (classes immuables `readonly`, namespace `App\`, conteneur / bootstrap propre).
+- **Sécurité renforcée** : Encapsulation des requêtes/réponses HTTP (`Request`/`Response`), protection CSRF systématique sur toutes les actions critiques, sécurisation XSS via `SecurityService`.
+- **Compteur de projets dynamique** : Remplacement des compteurs statiques par des données calculées en temps réel via le `ProjectRepository`.
 
 ## [1.0.0] - 2026-08-21
 
-### AjoutÃ©
-- **Portfolio One-Page Initial** : Architecture MVC initiale avec Front-Controller `index.php` et routeur personnalisÃ©.
-- **Design System & TailwindCSS** : Interface One-Page responsive avec thÃ¨me sombre, composants UI rÃ©utilisables et mise en page optimisÃ©e.
-- **Espace d'Administration & Messagerie** : Tableau de bord administrateur avec consultation des messages reÃ§us via le formulaire de contact.
-- **Envoi d'e-mails sÃ©curisÃ©** : Module SMTP natif via `stream_socket_client` (compatible Brevo et Mailtrap).
-- **SÃ©curitÃ© de base** : Protection CSRF, hachage sÃ©curisÃ© des mots de passe admin et filtrage XSS.
-- **Environnement Agentique** : Mise en place d'Antigravity 2.0 avec mÃ©moire persistante, compÃ©tences et conventions Git.
+### Ajouté
+- **Portfolio One-Page Initial** : Architecture MVC initiale avec Front-Controller `index.php` et routeur personnalisé.
+- **Design System & TailwindCSS** : Interface One-Page responsive avec thème sombre, composants UI réutilisables et mise en page optimisée.
+- **Espace d'Administration & Messagerie** : Tableau de bord administrateur avec consultation des messages reçus via le formulaire de contact.
+- **Envoi d'e-mails sécurisé** : Module SMTP natif via `stream_socket_client` (compatible Brevo et Mailtrap).
+- **Sécurité de base** : Protection CSRF, hachage sécurisé des mots de passe admin et filtrage XSS.
+- **Environnement Agentique** : Mise en place d'Antigravity 2.0 avec mémoire persistante, compétences et conventions Git.
+
