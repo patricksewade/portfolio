@@ -4,68 +4,75 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Core\ViewRenderer;
-use App\Http\Request;
-use App\Http\Response;
-use App\Repository\MessageRepository;
-use App\Service\SecurityService;
-use App\Service\SmtpMailer;
+use App\Dto\ContactDto;
+use App\Entity\Message;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
-/**
- * Contrôleur du formulaire de contact.
- */
-final class ContactController
+final class ContactController extends AbstractController
 {
-    public function __construct(
-        private readonly MessageRepository $messageRepository,
-        private readonly SmtpMailer $mailer,
-        private readonly ViewRenderer $viewRenderer,
-        private readonly SecurityService $securityService,
-    ) {}
-
-    /**
-     * Traite la soumission du formulaire de contact (POST uniquement).
-     * Validation, insertion en BDD, envoi d'email, pattern PRG.
-     */
-    public function process(Request $request): Response
-    {
-        if (!$this->securityService->verifyCsrfToken($request->getBodyParam('csrf_token'))) {
-            $_SESSION['flash_error'] = 'Jeton de sécurité invalide. Veuillez réessayer.';
-            return Response::redirect(BASE_URL . '/#contact');
+    #[Route(path: '/contact', name: 'app_contact', methods: ['POST'])]
+    public function process(
+        Request $request,
+        ValidatorInterface $validator,
+        EntityManagerInterface $em,
+        MailerInterface $mailer
+    ): Response {
+        if (!$this->isCsrfTokenValid('contact', $request->request->get('csrf_token'))) {
+            $this->addFlash('error', 'Jeton de sécurité invalide. Veuillez réessayer.');
+            return $this->redirectToRoute('app_home', ['_fragment' => 'contact']);
         }
 
-        $name    = trim($request->getBodyParam('name'));
-        $email   = trim($request->getBodyParam('email'));
-        $subject = trim($request->getBodyParam('subject'));
-        $message = trim($request->getBodyParam('message'));
+        $dto = new ContactDto();
+        $dto->name = trim((string)$request->request->get('name'));
+        $dto->email = trim((string)$request->request->get('email'));
+        $dto->subject = trim((string)$request->request->get('subject'));
+        $dto->message = trim((string)$request->request->get('content')); // The HTML field is 'content'
 
-        if (empty($name) || empty($email) || empty($message)) {
-            $_SESSION['flash_error'] = 'Tous les champs obligatoires doivent être remplis.';
-            return Response::redirect(BASE_URL . '/#contact');
+        $errors = $validator->validate($dto);
+
+        if (count($errors) > 0) {
+            $errorMessages = [];
+            foreach ($errors as $error) {
+                $errorMessages[] = $error->getMessage();
+            }
+            $this->addFlash('error', implode(' ', $errorMessages));
+            return $this->redirectToRoute('app_home', ['_fragment' => 'contact']);
         }
 
-        if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
-            $_SESSION['flash_error'] = 'Adresse email invalide.';
-            return Response::redirect(BASE_URL . '/#contact');
+        try {
+            $message = new Message();
+            $message->setSenderName($dto->name);
+            $message->setSenderEmail($dto->email);
+            $message->setSubject($dto->subject);
+            $message->setContent($dto->message);
+            $message->setStatus('unread');
+            $message->setCreatedAt(new \DateTimeImmutable());
+
+            $em->persist($message);
+            $em->flush();
+
+            // Envoi de l'email
+            $email = (new Email())
+                ->from($this->getParameter('app.mailer_from'))
+                ->to($this->getParameter('app.mailer_from')) // On s'envoie l'email à soi-même
+                ->replyTo($dto->email)
+                ->subject('Nouveau message de contact : ' . $dto->subject)
+                ->text("Nouveau message de : {$dto->name} <{$dto->email}>\n\nSujet : {$dto->subject}\n\n{$dto->message}");
+
+            $mailer->send($email);
+
+            $this->addFlash('success', 'Votre message a bien été envoyé. Merci !');
+        } catch (\Throwable $e) {
+            $this->addFlash('error', 'Une erreur technique est survenue. Veuillez réessayer.');
         }
 
-        // Insertion en base de données
-        $inserted = $this->messageRepository->insert($name, $email, $subject, $message);
-
-        if (!$inserted) {
-            $_SESSION['flash_error'] = 'Une erreur technique est survenue. Veuillez réessayer.';
-            return Response::redirect(BASE_URL . '/#contact');
-        }
-
-        // Envoi de l'email de notification (non bloquant en cas d'échec)
-        $emailBody = "Nouveau message de : {$name} <{$email}>\n\nSujet : {$subject}\n\n{$message}";
-        $this->mailer->send(
-            $_ENV['SMTP_USER'] ?? '',
-            "Nouveau message de contact : {$subject}",
-            $emailBody,
-        );
-
-        $_SESSION['flash_success'] = 'Votre message a bien été envoyé. Merci !';
-        return Response::redirect(BASE_URL . '/#contact');
+        return $this->redirectToRoute('app_home', ['_fragment' => 'contact']);
     }
 }

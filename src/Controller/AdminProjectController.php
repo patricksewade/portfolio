@@ -4,275 +4,209 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Core\ViewRenderer;
-use App\Http\Request;
-use App\Http\Response;
-use App\Model\Project;
+use App\Dto\ProjectDto;
+use App\Entity\Project;
 use App\Repository\ProjectRepository;
-use App\Service\SecurityService;
-use Bulletproof\Image;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * Contrôleur pour la gestion des projets dans l'administration.
- */
-final class AdminProjectController
+#[IsGranted('ROLE_ADMIN')]
+#[Route('/admin/projects')]
+final class AdminProjectController extends AbstractController
 {
-    public function __construct(
-        private readonly ProjectRepository $projectRepository,
-        private readonly ViewRenderer $viewRenderer,
-        private readonly SecurityService $securityService,
-    ) {}
+    #[Route('/create', name: 'app_admin_project_create', methods: ['GET', 'POST'])]
+    public function create(
+        Request $request,
+        ValidatorInterface $validator,
+        EntityManagerInterface $em
+    ): Response {
+        $dto = new ProjectDto();
 
-    /**
-     * Affiche le formulaire d'ajout et traite la soumission.
-     */
-    public function create(Request $request): Response
-    {
-        if (!$this->securityService->isAdmin()) {
-            return Response::redirect(BASE_URL . '/login');
-        }
+        if ($request->isMethod('POST')) {
+            if (!$this->isCsrfTokenValid('project_form', $request->request->get('csrf_token'))) {
+                $this->addFlash('error', 'Jeton de sécurité invalide.');
+                return $this->redirectToRoute('app_admin_dashboard');
+            }
 
-        $errors = [];
-        $projectData = [
-            'title' => '',
-            'description' => '',
-            'tech_stack' => '',
-            'github_url' => '',
-            'live_demo_url' => '',
-            'is_featured' => false,
-            'image_url' => '',
-        ];
+            $dto->title = trim((string)$request->request->get('title'));
+            $dto->description = trim((string)$request->request->get('description'));
+            $dto->techStack = trim((string)$request->request->get('tech_stack'));
+            $dto->githubUrl = trim((string)$request->request->get('github_url')) ?: null;
+            $dto->liveDemoUrl = trim((string)$request->request->get('live_demo_url')) ?: null;
+            $dto->isFeatured = (bool)$request->request->get('is_featured');
+            $dto->image = $request->files->get('image');
 
-        if ($request->isPost()) {
-            if (!$this->securityService->verifyCsrfToken($request->getBodyParam('csrf_token'))) {
-                $errors[] = "Jeton de sécurité invalide.";
+            $errors = $validator->validate($dto);
+
+            if (count($errors) > 0) {
+                foreach ($errors as $error) {
+                    $this->addFlash('error', $error->getMessage());
+                }
             } else {
-                $projectData = [
-                    'title' => trim($request->getBodyParam('title')),
-                    'description' => trim($request->getBodyParam('description')),
-                    'tech_stack' => trim($request->getBodyParam('tech_stack')),
-                    'github_url' => trim($request->getBodyParam('github_url')),
-                    'live_demo_url' => trim($request->getBodyParam('live_demo_url')),
-                    'is_featured' => (bool)$request->getBodyParam('is_featured'),
-                    'image_url' => '', 
-                ];
+                $project = new Project();
+                $project->setTitle($dto->title);
+                $project->setDescription($dto->description);
+                $project->setTechStack($dto->techStack);
+                $project->setGithubUrl($dto->githubUrl);
+                $project->setLiveDemoUrl($dto->liveDemoUrl);
+                $project->setIsFeatured($dto->isFeatured);
+                $project->setCreatedAt(new \DateTimeImmutable());
 
-                if (empty($projectData['title'])) {
-                    $errors[] = "Le titre est obligatoire.";
-                }
-                if (empty($projectData['description'])) {
-                    $errors[] = "La description est obligatoire.";
+                if ($dto->image) {
+                    $imageUrl = $this->handleImageUpload($dto->image);
+                    $project->setImageUrl($imageUrl);
                 }
 
-                if (empty($errors)) {
-                    try {
-                        $imageUrl = $this->handleImageUpload($request->getFiles());
-                        if ($imageUrl !== null) {
-                            $projectData['image_url'] = $imageUrl;
-                        }
-                    } catch (\Exception $e) {
-                        $errors[] = $e->getMessage();
-                    }
+                $em->persist($project);
+                $em->flush();
 
-                    if (empty($errors)) {
-                        $project = new Project(
-                            id: 0,
-                            title: $projectData['title'],
-                            description: $projectData['description'],
-                            techStack: $projectData['tech_stack'],
-                            isFeatured: $projectData['is_featured'],
-                            githubUrl: $projectData['github_url'],
-                            liveDemoUrl: $projectData['live_demo_url'],
-                            imageUrl: $projectData['image_url'],
-                            createdAt: new \DateTimeImmutable()
-                        );
-
-                        $this->projectRepository->insert($project);
-                        $_SESSION['flash_success'] = "Le projet a été créé avec succès.";
-                        return Response::redirect(BASE_URL . '/admin/dashboard');
-                    }
-                }
+                $this->addFlash('success', 'Le projet a été ajouté avec succès.');
+                return $this->redirectToRoute('app_admin_dashboard');
             }
         }
 
-        return $this->viewRenderer->renderResponse('pages/admin_project_form.php', [
+        return $this->render('pages/admin_project_form.html.twig', [
             'page_title' => 'Ajouter un projet',
-            'project' => $projectData,
-            'errors' => $errors,
-            'csrf_token' => $this->securityService->generateCsrfToken(),
-            'action_url' => BASE_URL . '/admin/projects/create',
+            'project' => $dto,
+            'action_url' => $this->generateUrl('app_admin_project_create'),
         ]);
     }
 
-    /**
-     * Affiche le formulaire de modification et traite la soumission.
-     */
-    public function edit(Request $request): Response
-    {
-        if (!$this->securityService->isAdmin()) {
-            return Response::redirect(BASE_URL . '/login');
+    #[Route('/edit/{id}', name: 'app_admin_project_edit', methods: ['GET', 'POST'])]
+    public function edit(
+        int $id,
+        Request $request,
+        ProjectRepository $projectRepository,
+        ValidatorInterface $validator,
+        EntityManagerInterface $em
+    ): Response {
+        $project = $projectRepository->find($id);
+
+        if (!$project) {
+            $this->addFlash('error', 'Projet introuvable.');
+            return $this->redirectToRoute('app_admin_dashboard');
         }
 
-        $id = (int)($request->isPost() ? $request->getBodyParam('id') : $request->getQueryParam('id', '0'));
-        $project = $this->projectRepository->findById($id);
+        $dto = new ProjectDto();
+        $dto->title = $project->getTitle() ?? '';
+        $dto->description = $project->getDescription() ?? '';
+        $dto->techStack = $project->getTechStack() ?? '';
+        $dto->githubUrl = $project->getGithubUrl();
+        $dto->liveDemoUrl = $project->getLiveDemoUrl();
+        $dto->isFeatured = $project->isFeatured() ?? false;
+        // L'image existante est stockée dans l'entité, le DTO gère le nouvel upload
 
-        if ($project === null) {
-            $_SESSION['flash_error'] = "Projet introuvable.";
-            return Response::redirect(BASE_URL . '/admin/dashboard');
-        }
+        if ($request->isMethod('POST')) {
+            if (!$this->isCsrfTokenValid('project_form', $request->request->get('csrf_token'))) {
+                $this->addFlash('error', 'Jeton de sécurité invalide.');
+                return $this->redirectToRoute('app_admin_dashboard');
+            }
 
-        $errors = [];
-        $projectData = [
-            'id' => $project->getId(),
-            'title' => $project->getTitle(),
-            'description' => $project->getDescription(),
-            'tech_stack' => $project->getTechStack(),
-            'github_url' => $project->getGithubUrl(),
-            'live_demo_url' => $project->getLiveDemoUrl(),
-            'is_featured' => $project->isFeatured(),
-            'image_url' => $project->getImageUrl(),
-        ];
+            $dto->title = trim((string)$request->request->get('title'));
+            $dto->description = trim((string)$request->request->get('description'));
+            $dto->techStack = trim((string)$request->request->get('tech_stack'));
+            $dto->githubUrl = trim((string)$request->request->get('github_url')) ?: null;
+            $dto->liveDemoUrl = trim((string)$request->request->get('live_demo_url')) ?: null;
+            $dto->isFeatured = (bool)$request->request->get('is_featured');
+            $dto->image = $request->files->get('image');
+            $removeImage = (bool)$request->request->get('remove_image');
 
-        if ($request->isPost()) {
-            if (!$this->securityService->verifyCsrfToken($request->getBodyParam('csrf_token'))) {
-                $errors[] = "Jeton de sécurité invalide.";
+            $errors = $validator->validate($dto);
+
+            if (count($errors) > 0) {
+                foreach ($errors as $error) {
+                    $this->addFlash('error', $error->getMessage());
+                }
             } else {
-                $projectData['title'] = trim($request->getBodyParam('title'));
-                $projectData['description'] = trim($request->getBodyParam('description'));
-                $projectData['tech_stack'] = trim($request->getBodyParam('tech_stack'));
-                $projectData['github_url'] = trim($request->getBodyParam('github_url'));
-                $projectData['live_demo_url'] = trim($request->getBodyParam('live_demo_url'));
-                $projectData['is_featured'] = (bool)$request->getBodyParam('is_featured');
+                $project->setTitle($dto->title);
+                $project->setDescription($dto->description);
+                $project->setTechStack($dto->techStack);
+                $project->setGithubUrl($dto->githubUrl);
+                $project->setLiveDemoUrl($dto->liveDemoUrl);
+                $project->setIsFeatured($dto->isFeatured);
 
-                if (empty($projectData['title'])) {
-                    $errors[] = "Le titre est obligatoire.";
+                if ($dto->image) {
+                    $imageUrl = $this->handleImageUpload($dto->image);
+                    // Supprimer l'ancienne image physiquement
+                    $this->deleteImageFile($project->getImageUrl());
+                    $project->setImageUrl($imageUrl);
+                } elseif ($removeImage) {
+                    $this->deleteImageFile($project->getImageUrl());
+                    $project->setImageUrl(null);
                 }
-                if (empty($projectData['description'])) {
-                    $errors[] = "La description est obligatoire.";
-                }
 
-                if (empty($errors)) {
-                    $removeImage = (bool)$request->getBodyParam('remove_image');
+                $em->flush();
 
-                    try {
-                        $imageUrl = $this->handleImageUpload($request->getFiles());
-                        if ($imageUrl !== null) {
-                            // Suppression de l'ancienne image si elle existe
-                            if (!empty($project->getImageUrl())) {
-                                $oldPath = BASE_PATH . '/public' . $project->getImageUrl();
-                                if (file_exists($oldPath) && is_file($oldPath)) {
-                                    unlink($oldPath);
-                                }
-                            }
-                            $projectData['image_url'] = $imageUrl;
-                        } elseif ($removeImage) {
-                            // Suppression physique de l'image demandée
-                            if (!empty($project->getImageUrl())) {
-                                $oldPath = BASE_PATH . '/public' . $project->getImageUrl();
-                                if (file_exists($oldPath) && is_file($oldPath)) {
-                                    unlink($oldPath);
-                                }
-                            }
-                            $projectData['image_url'] = '';
-                        }
-                    } catch (\Exception $e) {
-                        $errors[] = $e->getMessage();
-                    }
-
-                    if (empty($errors)) {
-                        $updatedProject = new Project(
-                            id: $project->getId(),
-                            title: $projectData['title'],
-                            description: $projectData['description'],
-                            techStack: $projectData['tech_stack'],
-                            isFeatured: $projectData['is_featured'],
-                            githubUrl: $projectData['github_url'],
-                            liveDemoUrl: $projectData['live_demo_url'],
-                            imageUrl: $projectData['image_url'],
-                            createdAt: $project->getCreatedAt()
-                        );
-
-                        $this->projectRepository->update($updatedProject);
-                        $_SESSION['flash_success'] = "Le projet a été modifié avec succès.";
-                        return Response::redirect(BASE_URL . '/admin/dashboard');
-                    }
-                }
+                $this->addFlash('success', 'Le projet a été modifié avec succès.');
+                return $this->redirectToRoute('app_admin_dashboard');
             }
         }
 
-        return $this->viewRenderer->renderResponse('pages/admin_project_form.php', [
+        return $this->render('pages/admin_project_form.html.twig', [
             'page_title' => 'Modifier le projet',
-            'project' => $projectData,
-            'errors' => $errors,
-            'csrf_token' => $this->securityService->generateCsrfToken(),
-            'action_url' => BASE_URL . '/admin/projects/edit',
+            'project' => $dto,
+            'project_id' => $project->getId(),
+            'current_image' => $project->getImageUrl(),
+            'action_url' => $this->generateUrl('app_admin_project_edit', ['id' => $project->getId()]),
         ]);
     }
 
-    /**
-     * Supprime un projet.
-     */
-    public function delete(Request $request): Response
-    {
-        if (!$this->securityService->isAdmin()) {
-            return Response::redirect(BASE_URL . '/login');
+    #[Route('/delete', name: 'app_admin_project_delete', methods: ['POST'])]
+    public function delete(
+        Request $request,
+        ProjectRepository $projectRepository,
+        EntityManagerInterface $em
+    ): Response {
+        if (!$this->isCsrfTokenValid('project_delete', $request->request->get('csrf_token'))) {
+            $this->addFlash('error', 'Jeton de sécurité invalide.');
+            return $this->redirectToRoute('app_admin_dashboard');
         }
 
-        if ($request->isPost()) {
-            if (!$this->securityService->verifyCsrfToken($request->getBodyParam('csrf_token'))) {
-                $_SESSION['flash_error'] = "Jeton de sécurité invalide.";
-            } else {
-                $id = (int)$request->getBodyParam('id');
-                if ($id > 0) {
-                    $project = $this->projectRepository->findById($id);
-                    if ($project !== null) {
-                        // Suppression physique de l'image si elle existe
-                        if (!empty($project->getImageUrl())) {
-                            $oldPath = BASE_PATH . '/public' . $project->getImageUrl();
-                            if (file_exists($oldPath) && is_file($oldPath)) {
-                                unlink($oldPath);
-                            }
-                        }
-                        
-                        $this->projectRepository->delete($id);
-                        $_SESSION['flash_success'] = "Le projet a été supprimé.";
-                    }
-                }
-            }
+        $id = (int)$request->request->get('id');
+        $project = $projectRepository->find($id);
+
+        if ($project) {
+            $this->deleteImageFile($project->getImageUrl());
+            $em->remove($project);
+            $em->flush();
+            $this->addFlash('success', 'Le projet a été supprimé.');
         }
 
-        return Response::redirect(BASE_URL . '/admin/dashboard');
+        return $this->redirectToRoute('app_admin_dashboard');
     }
 
-    /**
-     * Gère l'upload de l'image du projet avec bulletproof.
-     * Retourne l'URL de l'image (chemin relatif) ou null si aucun upload.
-     */
-    private function handleImageUpload(array $files): ?string
+    private function handleImageUpload(UploadedFile $file): string
     {
-        if (empty($files) || !isset($files['image']) || $files['image']['error'] === UPLOAD_ERR_NO_FILE) {
-            return null;
-        }
-
-        $image = new Image($files);
-        $image->setName(uniqid('proj_'));
-        $image->setMime(array('jpeg', 'jpg', 'png', 'gif', 'webp'));
-        $image->setSize(100, 2097152); // Min 100 octets, Max 2 Mo
-        $image->setStorage(BASE_PATH . '/public/assets/images/projects', 0755);
+        $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        // Optionnel: utiliser un slugger pour l'originalFilename
+        $newFilename = uniqid('proj_') . '.' . $file->guessExtension();
         
-        if (!is_dir($image->getStorage())) {
-            mkdir($image->getStorage(), 0755, true);
+        // On récupère le paramètre d'upload via Container ou on le hardcode (les images vont dans public/uploads/projects)
+        $uploadDir = $this->getParameter('kernel.project_dir') . '/public/uploads/projects';
+        
+        try {
+            $file->move($uploadDir, $newFilename);
+        } catch (FileException $e) {
+            throw new \Exception("Échec de l'upload de l'image");
         }
 
-        if ($image['image']) {
-            $upload = $image->upload();
-            if ($upload) {
-                return '/assets/images/projects/' . $image->getName() . '.' . $image->getMime();
-            } else {
-                throw new \Exception($image->getError());
+        return '/uploads/projects/' . $newFilename;
+    }
+
+    private function deleteImageFile(?string $imageUrl): void
+    {
+        if ($imageUrl) {
+            $path = $this->getParameter('kernel.project_dir') . '/public' . $imageUrl;
+            if (file_exists($path) && is_file($path)) {
+                unlink($path);
             }
         }
-
-        return null;
     }
 }
