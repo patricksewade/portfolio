@@ -1,40 +1,37 @@
 # Architecture Actuelle
 
 ## 1. Paradigme & Standards
-- PHP 8.3 max — OOP pure, architecture **MVC stricte sans framework**.
+- PHP 8.3 max — Symfony 7.4 LTS (Full-stack Framework).
 - Autoloading **PSR-4** via Composer : namespace `App\` → `src/`.
-- Respect des principes SOLID ; injection manuelle de dépendances dans `public/index.php`.
-- Fichier `.env` parsé par `Config\EnvLoader` (classe statique, sans librairie).
+- Respect des standards Symfony : Injection de dépendances via Autowiring/Autoconfiguration.
+- Fichier `.env` standard géré par Symfony Dotenv.
 
-## 2. Arborescence & Couches MVC
-- `/public` : Point d'entrée unique `index.php` (bootstrap + injection + dispatch), `.htaccess`, assets.
-- `/src/Core, Http & Config` : Infrastructures techniques (`Router`, `ViewRenderer`, `Request`, `Response`, `EnvLoader`, `Database`). `src/helpers.php` contient les polyfills procéduraux (`e()`, `is_admin()`).
-- `/src/Model & Repository` : Entités POO strictes (avec `toArray()` pour compatibilité vues) et accès aux données via PDO injecté.
-- `/src/Service` : Logique transverse (`SecurityService` statique, `SmtpMailer` OOP).
-- `/src/Controller` : Actions métier retournant via `Response->send()`. `HomeController` injecte les compteurs et données dynamiques depuis les repositories. `AdminController` prépare les KPIs du dashboard et injecte les tokens CSRF. `AdminProjectController` gère l'administration dynamique des projets (CRUD complet, pattern PRG, cycle de vie upload, messages flash).
-- `/templates` : Vues PHP modulaires (TailwindCSS "Premium" sombre). Header enrichi (liens sociaux, CTA CV), composant 'Back to Top' interactif (Vanilla JS) dans le footer, page mentions légales restructurée, formulaires avec indicateurs d'accessibilité.
+## 2. Arborescence & Couches (Symfony)
+- `/public` : Point d'entrée unique `index.php`, assets.
+- `/src/Entity` & `/src/Repository` : Entités Doctrine ORM (attributs PHP 8) et accès aux données.
+- `/src/Controller` : Contrôleurs Symfony (ex: `ProjectController`, `AdminProjectController`, `SecurityController`).
+- `/src/Security` : Authentification via Symfony Security (FormLogin, Authenticator customisé, Guard).
+- `/templates` : Vues Twig (`base.html.twig`). Vues existantes migrées via un script customisé de conversion PHP vers Twig.
 
-## 3. Base de Données & Accès aux Données
-- MySQL 8 / MariaDB 11.4 via PDO.
-- Tables : `admin`, `projects`, `messages`. Les données des projets sont entièrement dynamiques (plus de données en dur dans le code).
-- Pas d'ORM. `prepare()` obligatoire partout (plus de `$pdo->query()` non préparé).
+## 3. Base de Données & ORM
+- MySQL 8 / MariaDB 11.4 via Doctrine DBAL/ORM.
+- Tables : `admin`, `project`, `message` (mappées depuis les entités).
+- Migrations générées par DoctrineMigrationsBundle.
 
 ## 4. Sécurité & Authentification
-- XSS : `SecurityService::escape()` (méthode statique, accessible depuis les vues).
-- CSRF : `SecurityService::generateCsrfToken()` / `verifyCsrfToken()` via `hash_equals` — propagation systématique des tokens dans tous les formulaires d'actions (suppression, modification).
-- Auth : `Admin::verifyPassword()` encapsule `password_verify()` ; `__serialize()` empêche la fuite du hash.
-- Cookies de session : HTTPOnly, Secure, SameSite=Strict.
-- Messages Flash : Notifications éphémères (succès, erreurs de validation/upload) transmises via session et nettoyées après affichage.
-- Secrets : `.env` jamais commité (purge historique Git si fuite accidentelle).
+- XSS : Échappement automatique par Twig.
+- CSRF : Protection native Symfony Forms et générateurs de tokens.
+- Auth : `UserPasswordHasherInterface` et composant Security de Symfony.
+- Cookies de session gérés par le framework. Messages Flash via `addFlash()`.
 
-## 5. Librairies & API Externes
-- Emails : `SmtpMailer` (OOP) wrappant `smtp_socket.php` via `stream_socket_client`. Brevo en prod, Mailtrap en local.
-- Uploads : `samayo/bulletproof` (via Composer), taille max configurée à 2 Mo avec validation MIME. Cycle de vie complet : gestion des erreurs par `Exception` attrapée dans le contrôleur et suppression physique systématique des fichiers via `unlink()` lors du remplacement ou de la suppression d'un projet.
+## 5. Librairies & Services
+- Emails : Composant Symfony Mailer.
+- Uploads : Gestion d'upload (à documenter, par défaut Symfony Forms + contraintes).
+- Tests : WebTestCase et Panther pour les tests fonctionnels.
 
 ## 6. Évolution & Roadmap
-- **Release v1.1.0 (Portfolio PHP 8.3 OOP MVC) — ✅ ACCOMPLIE** : Migration POO pure PSR-4, CRUD dynamique complet des projets avec Bulletproof, UI sombre premium, KPI dashboard et sécurité renforcée. Archive détaillée dans `./.agents/rules/archive/2026-08-27_release_v1.1.0_custom_mvc.md`.
-- **Cycle Actuel — Migration Symfony 7.4 LTS — 🔄 EN COURS** : Branche `refactor/symfony-7.4-lts-migration` active pour la transition du framework maison vers Symfony 7.4 LTS (Routing, Twig, Doctrine ORM, Symfony Security, Symfony Mailer).
-- **Prochaines Étapes** : Initialisation du projet Symfony 7.4 LTS, migration Doctrine ORM, portage des contrôleurs/services vers l'écosystème Symfony et conversion des vues en Twig.
+- **Migration Symfony 7.4 LTS — ✅ ACCOMPLIE (Jalons 1 à 6)** : Bootstrapping, Modèles/Doctrine, Sécurité, Contrôleurs CRUD Projets, Twig avec base, Mailer, et tests fonctionnels basiques. Les vues PHP ont été adaptées à Twig avec un script custom.
+- L'ancienne version custom MVC (Release v1.1.0) a été archivée dans `./.agents/rules/archive/2026-08-27_release_v1.1.0_custom_mvc.md`. La fin de la migration est détaillée dans `./.agents/rules/archive/2026-08-28_migration_symfony_74_achevee.md`.
 
 ## 7. Architecture Agentique (Antigravity 2.0)
 - **Personnalisation & Outils** : Workspace Rules, Skills, Subagents, Hooks (standards Antigravity).
