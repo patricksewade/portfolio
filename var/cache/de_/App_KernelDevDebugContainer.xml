@@ -267,23 +267,31 @@
     <service id="App\Controller\HomeController" class="App\Controller\HomeController" autowire="true" autoconfigure="true">
       <tag name="container.error" message="Cannot autowire service &quot;App\Controller\HomeController&quot;: argument &quot;$viewRenderer&quot; of method &quot;__construct()&quot; has type &quot;App\Core\ViewRenderer&quot; but this class was not found."/>
     </service>
-    <service id="App\Model\Admin" class="App\Model\Admin" autowire="true" autoconfigure="true">
-      <tag name="container.error" message="Cannot autowire service &quot;App\Model\Admin&quot;: argument &quot;$id&quot; of method &quot;__construct()&quot; is type-hinted &quot;int&quot;, you should configure its value explicitly."/>
+    <service id="App\Dto\ContactDto" class="App\Dto\ContactDto" autowire="true" autoconfigure="true"/>
+    <service id="App\Dto\ProjectDto" class="App\Dto\ProjectDto" autowire="true" autoconfigure="true"/>
+    <service id="App\Entity\Admin" class="App\Entity\Admin" autowire="true" autoconfigure="true">
+      <tag name="container.excluded" source="because it's a Doctrine entity"/>
+      <tag name="container.excluded" source="with #[Doctrine\ORM\Mapping\Entity] attribute"/>
     </service>
-    <service id="App\Model\Message" class="App\Model\Message" autowire="true" autoconfigure="true">
-      <tag name="container.error" message="Cannot autowire service &quot;App\Model\Message&quot;: argument &quot;$id&quot; of method &quot;__construct()&quot; is type-hinted &quot;int&quot;, you should configure its value explicitly."/>
+    <service id="App\Entity\Message" class="App\Entity\Message" autowire="true" autoconfigure="true">
+      <tag name="container.excluded" source="because it's a Doctrine entity"/>
+      <tag name="container.excluded" source="with #[Doctrine\ORM\Mapping\Entity] attribute"/>
     </service>
-    <service id="App\Model\Project" class="App\Model\Project" autowire="true" autoconfigure="true">
-      <tag name="container.error" message="Cannot autowire service &quot;App\Model\Project&quot;: argument &quot;$id&quot; of method &quot;__construct()&quot; is type-hinted &quot;int&quot;, you should configure its value explicitly."/>
+    <service id="App\Entity\Project" class="App\Entity\Project" autowire="true" autoconfigure="true">
+      <tag name="container.excluded" source="because it's a Doctrine entity"/>
+      <tag name="container.excluded" source="with #[Doctrine\ORM\Mapping\Entity] attribute"/>
     </service>
     <service id="App\Repository\AdminRepository" class="App\Repository\AdminRepository" autowire="true" autoconfigure="true">
-      <tag name="container.error" message="Cannot autowire service &quot;App\Repository\AdminRepository&quot;: argument &quot;$pdo&quot; of method &quot;__construct()&quot; references class &quot;PDO&quot; but no such service exists."/>
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
     </service>
     <service id="App\Repository\MessageRepository" class="App\Repository\MessageRepository" autowire="true" autoconfigure="true">
-      <tag name="container.error" message="Cannot autowire service &quot;App\Repository\MessageRepository&quot;: argument &quot;$pdo&quot; of method &quot;__construct()&quot; references class &quot;PDO&quot; but no such service exists."/>
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
     </service>
     <service id="App\Repository\ProjectRepository" class="App\Repository\ProjectRepository" autowire="true" autoconfigure="true">
-      <tag name="container.error" message="Cannot autowire service &quot;App\Repository\ProjectRepository&quot;: argument &quot;$pdo&quot; of method &quot;__construct()&quot; references class &quot;PDO&quot; but no such service exists."/>
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
     </service>
     <service id="App\Service\SecurityService" class="App\Service\SecurityService" autowire="true" autoconfigure="true"/>
     <service id="App\Service\SmtpMailer" class="App\Service\SmtpMailer" autowire="true" autoconfigure="true"/>
@@ -3193,7 +3201,7 @@
     <service id="doctrine.orm.configuration" class="Doctrine\ORM\Configuration" abstract="true"/>
     <service id="doctrine.orm.entity_manager.abstract" class="Doctrine\ORM\EntityManager" lazy="true" abstract="true"/>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory">
-      <argument type="service" id=".service_locator.dpiLQ5O"/>
+      <argument type="service" id=".service_locator.VGkQQh."/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -4792,6 +4800,18 @@
       <tag name="twig.extension"/>
     </service>
     <service id="twig.missing_extension_suggestor" class="Twig\Extra\TwigExtraBundle\MissingExtensionSuggestor"/>
+    <service id=".instanceof.App\Entity\Admin.0.App\Entity\Admin" class="App\Entity\Admin" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Entity\Admin" class="App\Entity\Admin" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.App\Entity\Message.0.App\Entity\Message" class="App\Entity\Message" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Entity\Message" class="App\Entity\Message" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.App\Entity\Project.0.App\Entity\Project" class="App\Entity\Project" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Entity\Project" class="App\Entity\Project" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\AdminRepository" class="App\Repository\AdminRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\AdminRepository" class="App\Repository\AdminRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\MessageRepository" class="App\Repository\MessageRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\MessageRepository" class="App\Repository\MessageRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\ProjectRepository" class="App\Repository\ProjectRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\ProjectRepository" class="App\Repository\ProjectRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".service_locator.ryAvHi4" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -5027,9 +5047,13 @@
         <argument key="doctrine.orm.default_listeners.attach_entity_listeners" type="service_closure" id="doctrine.orm.default_listeners.attach_entity_listeners"/>
       </argument>
     </service>
-    <service id=".service_locator.dpiLQ5O" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.VGkQQh." class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
-      <argument type="collection"/>
+      <argument type="collection">
+        <argument key="App\Repository\AdminRepository" type="service_closure" id="App\Repository\AdminRepository"/>
+        <argument key="App\Repository\MessageRepository" type="service_closure" id="App\Repository\MessageRepository"/>
+        <argument key="App\Repository\ProjectRepository" type="service_closure" id="App\Repository\ProjectRepository"/>
+      </argument>
     </service>
     <service id=".service_locator.W55Po6X" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
@@ -5180,6 +5204,10 @@
       <argument type="collection">
         <argument key="reverse_container" type="service_closure" id="reverse_container" on-invalid="ignore_uninitialized"/>
       </argument>
+    </service>
+    <service id=".service_locator.dpiLQ5O" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection"/>
     </service>
     <service id=".service_locator.6eloqTE" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
