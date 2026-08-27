@@ -4,29 +4,34 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Model\Admin;
+use App\Entity\Admin;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 /**
- * Accès aux données de la table `admin`.
- * Remplace les fonctions procédurales de admin_dal.php.
+ * @extends ServiceEntityRepository<Admin>
  */
-final class AdminRepository
+class AdminRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-    public function __construct(
-        private readonly \PDO $pdo,
-    ) {}
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Admin::class);
+    }
 
     /**
-     * Recherche un administrateur par son nom d'utilisateur.
+     * Used to upgrade (rehash) the user's password automatically over time.
      */
-    public function findByUsername(string $username): ?Admin
+    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
-        $stmt = $this->pdo->prepare(
-            'SELECT * FROM admin WHERE username = :username LIMIT 1'
-        );
-        $stmt->execute(['username' => $username]);
+        if (!$user instanceof Admin) {
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
+        }
 
-        $row = $stmt->fetch();
-        return $row !== false ? Admin::fromArray($row) : null;
+        $user->setPassword($newHashedPassword);
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
     }
 }
