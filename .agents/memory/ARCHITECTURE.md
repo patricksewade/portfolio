@@ -32,9 +32,9 @@
 - Uploads : `samayo/bulletproof` (via Composer), taille max configurée à 2 Mo avec validation MIME. Cycle de vie complet : gestion des erreurs par `Exception` attrapée dans le contrôleur et suppression physique systématique des fichiers via `unlink()` lors du remplacement ou de la suppression d'un projet.
 
 ## 6. Évolution & Roadmap
-- **V1 OOP MVC — ✅ ACCOMPLIE** : Migration complète vers une architecture POO stricte PSR-4. Le legacy procédural (`/includes`) a été totalement supprimé.
-- **Améliorations UI/UX & Dynamisation — ✅ ACCOMPLIE** : Jalon `feat/portfolio-enhancements` (dynamisation compteur projets, header enrichi avec réseaux sociaux et CV, mentions légales premium, Back to Top interactif).
-- **V2** : Migration vers Symfony envisagée.
+- **Release v1.1.0 (Portfolio PHP 8.3 OOP MVC) — ✅ ACCOMPLIE** : Migration POO pure PSR-4, CRUD dynamique complet des projets avec Bulletproof, UI sombre premium, KPI dashboard et sécurité renforcée. Archive détaillée dans `./.agents/rules/archive/2026-08-27_release_v1.1.0_custom_mvc.md`.
+- **Cycle Actuel — Migration Symfony 7.4 LTS — 🔄 EN COURS** : Branche `refactor/symfony-7.4-lts-migration` active pour la transition du framework maison vers Symfony 7.4 LTS (Routing, Twig, Doctrine ORM, Symfony Security, Symfony Mailer).
+- **Prochaines Étapes** : Initialisation du projet Symfony 7.4 LTS, migration Doctrine ORM, portage des contrôleurs/services vers l'écosystème Symfony et conversion des vues en Twig.
 
 ## 7. Architecture Agentique (Antigravity 2.0)
 - **Personnalisation & Outils** : Workspace Rules, Skills, Subagents, Hooks (standards Antigravity).
