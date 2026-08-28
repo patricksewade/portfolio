@@ -1,15 +1,17 @@
 {% extends 'base.html.twig' %}
-{% block body %}
 
+{% block title %}{{ isEdit ? 'Modifier' : 'Ajouter' }} un projet | Admin{% endblock %}
+
+{% block body %}
 <div class="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-xl border border-slate-100">
     <div class="flex justify-between items-center mb-8">
-        <h1 class="text-3xl font-display font-bold text-slate-900">{{ page_title|escape }}</h1>
-        <a href="/admin/dashboard" class="text-slate-500 hover:text-slate-800 transition-colors">
+        <h1 class="text-3xl font-display font-bold text-slate-900">{{ isEdit ? 'Modifier' : 'Ajouter' }} un projet</h1>
+        <a href="{{ path('app_admin_dashboard') }}" class="text-slate-500 hover:text-slate-800 transition-colors">
             &larr; Retour au tableau de bord
         </a>
     </div>
 
-    {% if errors is not empty %}
+    {% if errors is defined and errors is not empty %}
         <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-8 rounded-r-lg">
             <div class="flex">
                 <div class="flex-shrink-0">
@@ -29,10 +31,11 @@
         </div>
     {% endif %}
 
-    <form action="{{ action_url|escape }}" method="POST" enctype="multipart/form-data" class="space-y-6">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token|escape }}">
-        {% if project.id is not empty %}
-            <input type="hidden" name="id" value="{{ project_id|default('') }}">
+    <form action="{{ isEdit ? path('app_admin_project_edit', {'id': project.id}) : path('app_admin_project_create') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token('project_form') }}">
+        
+        {% if isEdit %}
+            <input type="hidden" name="id" value="{{ project.id|escape }}">
         {% endif %}
 
         <!-- Titre -->
@@ -79,10 +82,10 @@
         <!-- Image Upload -->
         <div>
             <label for="image" class="block text-sm font-semibold text-slate-700 mb-1">Image du projet</label>
-            {% if project.image_url is not empty %}
+            {% if project.image_url is defined and project.image_url is not empty %}
                 <div class="mb-3">
                     <p class="text-xs text-slate-500 mb-2">Image actuelle :</p>
-                    <img src="{{ current_image|default('') }}" alt="Aperçu" class="h-24 w-auto rounded border border-slate-200 shadow-sm mb-2">
+                    <img src="{{ project.image_url|escape }}" alt="Aperçu" class="h-24 w-auto rounded border border-slate-200 shadow-sm mb-2">
                     <label class="inline-flex items-center text-sm text-red-600 hover:text-red-700 cursor-pointer">
                         <input type="checkbox" name="remove_image" value="1" class="form-checkbox h-4 w-4 text-red-600 rounded border-gray-300 focus:ring-red-500 mr-2">
                         Supprimer l'image actuelle
@@ -96,7 +99,7 @@
 
         <!-- Is Featured -->
         <div class="flex items-center">
-            <input id="is_featured" name="is_featured" type="checkbox" value="1" {{ project.is_featured ? 'checked' : '' }}
+            <input id="is_featured" name="is_featured" type="checkbox" value="1" {{ project.is_featured is defined and project.is_featured ? 'checked' : '' }}
                 class="h-5 w-5 text-brand focus:ring-brand border-gray-300 rounded cursor-pointer">
             <label for="is_featured" class="ml-3 block text-sm font-medium text-slate-700 cursor-pointer">
                 Mettre ce projet en avant (projet phare)
@@ -105,17 +108,13 @@
 
         <!-- Actions -->
         <div class="pt-6 border-t border-slate-100 flex justify-end space-x-4">
-            <a href="/admin/dashboard" class="px-6 py-3 border border-slate-300 shadow-sm text-sm font-medium rounded-lg text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand transition-colors">
+            <a href="{{ path('app_admin_dashboard') }}" class="px-6 py-3 border border-slate-300 shadow-sm text-sm font-medium rounded-lg text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand transition-colors">
                 Annuler
             </a>
             <button type="submit" class="px-6 py-3 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-brand hover:bg-brand/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand transition-colors">
-                {{ empty(project.id) ? 'Ajouter le projet' : 'Enregistrer les modifications' }}
+                {{ isEdit ? 'Enregistrer les modifications' : 'Ajouter le projet' }}
             </button>
         </div>
     </form>
 </div>
-
 {% endblock %}
-
-
-

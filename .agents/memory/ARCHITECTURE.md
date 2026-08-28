@@ -11,7 +11,7 @@
 - `/src/Entity` & `/src/Repository` : Entités Doctrine ORM (attributs PHP 8) et accès aux données.
 - `/src/Controller` : Contrôleurs Symfony (ex: `ProjectController`, `AdminProjectController`, `SecurityController`).
 - `/src/Security` : Authentification via Symfony Security (FormLogin, Authenticator customisé, Guard).
-- `/templates` : Vues Twig (`base.html.twig`). Vues existantes migrées via un script customisé de conversion PHP vers Twig.
+- `/templates` : Vues Twig (`base.html.twig`, `home.html.twig`). Restaurées et nettoyées (UTF-8, layout Tailwind CDN, fonts Google, aucun HTML redondant).
 
 ## 3. Base de Données & ORM
 - MySQL 8 / MariaDB 11.4 via Doctrine DBAL/ORM.
@@ -30,7 +30,7 @@
 - Tests : WebTestCase et Panther pour les tests fonctionnels.
 
 ## 6. Évolution & Roadmap
-- **Migration Symfony 7.4 LTS — ✅ ACCOMPLIE (Jalons 1 à 6)** : Bootstrapping, Modèles/Doctrine, Sécurité, Contrôleurs CRUD Projets, Twig avec base, Mailer, et tests fonctionnels basiques. Les vues PHP ont été adaptées à Twig avec un script custom.
+- **Migration Symfony 7.4 LTS — ✅ ACCOMPLIE (Jalons 1 à 6)** : Bootstrapping, Modèles/Doctrine, Sécurité, Contrôleurs CRUD Projets, Twig avec base (templates restaurés depuis v1.1.0 et corrigés), Mailer, et tests fonctionnels basiques.
 - L'ancienne version custom MVC (Release v1.1.0) a été archivée dans `./.agents/rules/archive/2026-08-27_release_v1.1.0_custom_mvc.md`. La fin de la migration est détaillée dans `./.agents/rules/archive/2026-08-28_migration_symfony_74_achevee.md`.
 
 ## 7. Architecture Agentique (Antigravity 2.0)
