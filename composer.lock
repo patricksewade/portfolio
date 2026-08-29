@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a91af020582c58d7b6f01d35e16bf128",
+    "content-hash": "e398cc807b43da3600cf55d5d015eb60",
     "packages": [
         {
             "name": "composer/semver",
@@ -3704,6 +3704,80 @@
                 }
             ],
             "time": "2026-08-21T17:40:08+00:00"
+        },
+        {
+            "name": "symfony/mailtrap-mailer",
+            "version": "v7.4.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/mailtrap-mailer.git",
+                "reference": "61b0a8497256d8ab035c22872b0dd60bc1719cbd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/mailtrap-mailer/zipball/61b0a8497256d8ab035c22872b0dd60bc1719cbd",
+                "reference": "61b0a8497256d8ab035c22872b0dd60bc1719cbd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2",
+                "psr/event-dispatcher": "^1",
+                "symfony/mailer": "^7.2|^8.0"
+            },
+            "conflict": {
+                "symfony/webhook": "<7.2"
+            },
+            "require-dev": {
+                "symfony/http-client": "^6.4|^7.0|^8.0",
+                "symfony/webhook": "^7.2|^8.0"
+            },
+            "type": "symfony-mailer-bridge",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Mailer\\Bridge\\Mailtrap\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Mailtrap Mailer Bridge",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/mailtrap-mailer/tree/v7.4.12"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2026-05-13T14:09:45+00:00"
         },
         {
             "name": "symfony/mime",
@@ -8637,80 +8711,6 @@
             "time": "2026-08-21T17:40:08+00:00"
         },
         {
-            "name": "symfony/mailtrap-mailer",
-            "version": "v7.4.12",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/mailtrap-mailer.git",
-                "reference": "61b0a8497256d8ab035c22872b0dd60bc1719cbd"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mailtrap-mailer/zipball/61b0a8497256d8ab035c22872b0dd60bc1719cbd",
-                "reference": "61b0a8497256d8ab035c22872b0dd60bc1719cbd",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.2",
-                "psr/event-dispatcher": "^1",
-                "symfony/mailer": "^7.2|^8.0"
-            },
-            "conflict": {
-                "symfony/webhook": "<7.2"
-            },
-            "require-dev": {
-                "symfony/http-client": "^6.4|^7.0|^8.0",
-                "symfony/webhook": "^7.2|^8.0"
-            },
-            "type": "symfony-mailer-bridge",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Mailer\\Bridge\\Mailtrap\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Mailtrap Mailer Bridge",
-            "homepage": "https://symfony.com",
-            "support": {
-                "source": "https://github.com/symfony/mailtrap-mailer/tree/v7.4.12"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/nicolas-grekas",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2026-05-13T14:09:45+00:00"
-        },
-        {
             "name": "symfony/maker-bundle",
             "version": "v1.67.0",
             "source": {
@@ -8952,7 +8952,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
@@ -8960,6 +8960,6 @@
         "ext-ctype": "*",
         "ext-iconv": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.9.0"
 }

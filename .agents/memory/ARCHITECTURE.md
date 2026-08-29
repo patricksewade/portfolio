@@ -30,10 +30,13 @@
 - Tests : WebTestCase et Panther pour les tests fonctionnels.
 
 ## 6. Évolution & Roadmap
-- **Migration Symfony 7.4 LTS — ✅ ACCOMPLIE (Jalons 1 à 6)** : Bootstrapping, Modèles/Doctrine, Sécurité, Contrôleurs CRUD Projets, Twig avec base (templates restaurés depuis v1.1.0 et corrigés), Mailer, et tests fonctionnels basiques.
+- **Migration Symfony 7.4 LTS — ✅ ACCOMPLIE (Jalons 1 à 6)** : Bootstrapping, Modèles/Doctrine, Sécurité, Contrôleurs (CRUD Projets, actions Admin et intégration des KPIs), Twig avec base (templates restaurés depuis v1.1.0, convertis intégralement en syntaxe Twig sans balises PHP résiduelles et standardisés en UTF-8), Mailer, et tests fonctionnels basiques.
 - L'ancienne version custom MVC (Release v1.1.0) a été archivée dans `./.agents/rules/archive/2026-08-27_release_v1.1.0_custom_mvc.md`. La fin de la migration est détaillée dans `./.agents/rules/archive/2026-08-28_migration_symfony_74_achevee.md`.
 
 ## 7. Architecture Agentique (Antigravity 2.0)
 - **Personnalisation & Outils** : Workspace Rules, Skills, Subagents, Hooks (standards Antigravity).
 - **Mémoire & Documentation** : Compétence `project-memory` + sous-agent `archivist` pour mises à jour en arrière-plan.
-- **Workflow Git** : Règle `git-conventions.md` (Conventional Commits) + hook `check_commit.php` + skill `git-release` + sous-agent `pr-reviewer`.
+## 8. Déploiement & Hébergement
+- **Environnement Cible** : Hébergement Byet.host (Offre Free Hosting, PHP 8.3.27, MariaDB 11.4).
+- **Contraintes** : Déploiement FTP (pas de SSH/CLI), limitation d'envoi d'emails (utilisation de SMTP externe obligatoire), document root restreint à `/htdocs`.
+- **Documentation Détaillée** : Pour la configuration du déploiement ou l'adaptation du code à la production, voir le fichier dédié `./.agents/memory/HOSTING.md`.

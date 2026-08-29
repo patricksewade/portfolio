@@ -14,7 +14,7 @@ final class HomeController extends AbstractController
     #[Route(path: '/', name: 'app_home', methods: ['GET'])]
     public function index(ProjectRepository $projectRepository): Response
     {
-        $projects = $projectRepository->findBy([], ['id' => 'DESC']);
+        $projects = $projectRepository->findBy([], ['isFeatured' => 'DESC', 'id' => 'DESC']);
 
         $profileSummary = "Diplômé d'un Master 2 Architecte Digital et fort de 9 ans de pratique PHP (architecture POO, bases de données, ERP, bonnes pratiques modernes), j'applique aujourd'hui ces compétences fondamentales à l'écosystème Symfony. Autonome et rigoureux, je souhaite m'investir pleinement dans le développement, l'optimisation et la pérennisation de vos applications web.";
 

@@ -100,7 +100,7 @@ class Project
         return $this->githubUrl;
     }
 
-    public function setGithubUrl(string $githubUrl): static
+    public function setGithubUrl(?string $githubUrl): static
     {
         $this->githubUrl = $githubUrl;
         return $this;
@@ -111,7 +111,7 @@ class Project
         return $this->liveDemoUrl;
     }
 
-    public function setLiveDemoUrl(string $liveDemoUrl): static
+    public function setLiveDemoUrl(?string $liveDemoUrl): static
     {
         $this->liveDemoUrl = $liveDemoUrl;
         return $this;
@@ -122,7 +122,7 @@ class Project
         return $this->imageUrl;
     }
 
-    public function setImageUrl(string $imageUrl): static
+    public function setImageUrl(?string $imageUrl): static
     {
         $this->imageUrl = $imageUrl;
         return $this;

@@ -22,9 +22,10 @@ final class ContactController extends AbstractController
         Request $request,
         ValidatorInterface $validator,
         EntityManagerInterface $em,
-        MailerInterface $mailer
+        MailerInterface $mailer,
+        \Psr\Log\LoggerInterface $logger
     ): Response {
-        if (!$this->isCsrfTokenValid('contact', $request->request->get('csrf_token'))) {
+        if (!$this->isCsrfTokenValid('contact', (string) $request->request->get('_token'))) {
             $this->addFlash('error', 'Jeton de sécurité invalide. Veuillez réessayer.');
             return $this->redirectToRoute('app_home', ['_fragment' => 'contact']);
         }
@@ -70,6 +71,7 @@ final class ContactController extends AbstractController
 
             $this->addFlash('success', 'Votre message a bien été envoyé. Merci !');
         } catch (\Throwable $e) {
+            $logger->error('Erreur lors de l\'envoi du contact : ' . $e->getMessage(), ['exception' => $e]);
             $this->addFlash('error', 'Une erreur technique est survenue. Veuillez réessayer.');
         }
 

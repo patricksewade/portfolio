@@ -1,4 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin_base.html.twig' %}
+
+{% set isEdit = project_id is defined %}
 
 {% block title %}{{ isEdit ? 'Modifier' : 'Ajouter' }} un projet | Admin{% endblock %}
 
@@ -31,11 +33,11 @@
         </div>
     {% endif %}
 
-    <form action="{{ isEdit ? path('app_admin_project_edit', {'id': project.id}) : path('app_admin_project_create') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+    <form action="{{ action_url }}" method="POST" enctype="multipart/form-data" class="space-y-6">
         <input type="hidden" name="csrf_token" value="{{ csrf_token('project_form') }}">
         
         {% if isEdit %}
-            <input type="hidden" name="id" value="{{ project.id|escape }}">
+            <input type="hidden" name="id" value="{{ project_id|escape }}">
         {% endif %}
 
         <!-- Titre -->
@@ -58,7 +60,7 @@
             <label for="tech_stack" class="block text-sm font-semibold text-slate-700 mb-1">Technologies (Tech Stack)</label>
             <input type="text" id="tech_stack" name="tech_stack" placeholder="ex: PHP, Symfony, TailwindCSS"
                 class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand focus:border-brand transition-colors bg-slate-50 focus:bg-white"
-                value="{{ project.tech_stack ?? ''|escape }}">
+                value="{{ project.techStack ?? ''|escape }}">
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -67,7 +69,7 @@
                 <label for="github_url" class="block text-sm font-semibold text-slate-700 mb-1">URL GitHub</label>
                 <input type="url" id="github_url" name="github_url" placeholder="https://github.com/..."
                     class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand focus:border-brand transition-colors bg-slate-50 focus:bg-white"
-                    value="{{ project.github_url ?? ''|escape }}">
+                    value="{{ project.githubUrl ?? ''|escape }}">
             </div>
 
             <!-- Live Demo URL -->
@@ -75,17 +77,17 @@
                 <label for="live_demo_url" class="block text-sm font-semibold text-slate-700 mb-1">URL Site / Démo</label>
                 <input type="url" id="live_demo_url" name="live_demo_url" placeholder="https://..."
                     class="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand focus:border-brand transition-colors bg-slate-50 focus:bg-white"
-                    value="{{ project.live_demo_url ?? ''|escape }}">
+                    value="{{ project.liveDemoUrl ?? ''|escape }}">
             </div>
         </div>
 
         <!-- Image Upload -->
         <div>
             <label for="image" class="block text-sm font-semibold text-slate-700 mb-1">Image du projet</label>
-            {% if project.image_url is defined and project.image_url is not empty %}
+            {% if current_image is defined and current_image is not empty %}
                 <div class="mb-3">
                     <p class="text-xs text-slate-500 mb-2">Image actuelle :</p>
-                    <img src="{{ project.image_url|escape }}" alt="Aperçu" class="h-24 w-auto rounded border border-slate-200 shadow-sm mb-2">
+                    <img src="{{ asset(current_image) }}" alt="Aperçu" class="h-24 w-auto rounded border border-slate-200 shadow-sm mb-2">
                     <label class="inline-flex items-center text-sm text-red-600 hover:text-red-700 cursor-pointer">
                         <input type="checkbox" name="remove_image" value="1" class="form-checkbox h-4 w-4 text-red-600 rounded border-gray-300 focus:ring-red-500 mr-2">
                         Supprimer l'image actuelle
@@ -99,7 +101,7 @@
 
         <!-- Is Featured -->
         <div class="flex items-center">
-            <input id="is_featured" name="is_featured" type="checkbox" value="1" {{ project.is_featured is defined and project.is_featured ? 'checked' : '' }}
+            <input id="is_featured" name="is_featured" type="checkbox" value="1" {{ project.isFeatured is defined and project.isFeatured ? 'checked' : '' }}
                 class="h-5 w-5 text-brand focus:ring-brand border-gray-300 rounded cursor-pointer">
             <label for="is_featured" class="ml-3 block text-sm font-medium text-slate-700 cursor-pointer">
                 Mettre ce projet en avant (projet phare)

@@ -8,9 +8,11 @@ name: Règles Globales du Projet
 - **Contrainte de Version PHP** : La version maximale supportée par le projet est strictement **PHP 8.3.27**. Il est formellement interdit d'utiliser des syntaxes ou fonctionnalités exclusives à PHP 8.4+ (ex: *Property Hooks*, *Asymmetric Visibility*, `array_find()`, etc.).
 - L'historique et l'architecture du projet ne sont plus chargés automatiquement. Avant de proposer un plan d'implémentation ou de modifier l'architecture, tu DOIS utiliser ta compétence (Skill) `project-memory` pour lire l'état actuel du projet. Il est impératif de ne pas répéter les erreurs consignées dans les leçons apprises.
 - Si tu as besoin d'un historique technique très ancien, et seulement si on te le demande, réfère-toi au dossier `.agents/rules/archive/`.
+- **Déploiement & Hébergement** : Avant toute intervention liée au déploiement en production, à la configuration serveur (Apache/Nginx) ou à l'adaptation de Symfony pour l'hébergeur, tu DOIS lire le fichier `.agents/memory/HOSTING.md`.
 
 # Hygiène et Sécurité du Dépôt (Nettoyage Obligatoire)
 
+- **RÈGLE DE CONFIDENTIALITÉ ABSOLUE** : Il est formellement interdit d'inscrire ou de conserver des données sensibles (identifiants, mots de passe, clés d'API, hôtes FTP/MySQL, chemins physiques absolus de serveurs distants) dans les fichiers versionnés du projet, y compris dans les documents de mémoire ou de configuration du dossier `.agents/`. Utilise systématiquement des variables génériques (ex: `[FTP_USERNAME]`, `[SERVER_PATH]`). Ces données réelles doivent résider uniquement dans le fichier `.env.local` ou dans un gestionnaire de secrets.
 - Tu es autorisé à créer des fichiers temporaires (ex: `test.php`, `debug.json`, `dump.php`) uniquement pour valider tes hypothèses techniques en cours de tâche.
 - RÈGLE ABSOLUE : Dès que ton test est validé et que le code final est intégré, tu DOIS impérativement supprimer de toi-même tous les fichiers de test que tu as générés.
 - Il est strictement interdit de laisser subsister un fichier de debug ou de test dans l'arborescence avant de clôturer ton intervention.

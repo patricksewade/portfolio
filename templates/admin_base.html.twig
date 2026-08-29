@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+    <!-- Admin Header -->
+    <header class="bg-slate-900 shadow-lg sticky top-0 z-50 border-b border-slate-800">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            
+            <div class="flex items-center gap-6">
+                <!-- Logo Admin -->
+                <a href="{{ path('app_admin_dashboard') }}" title="Tableau de bord" class="flex items-center text-white font-extrabold tracking-tight select-none">
+                    <span class="text-brand font-mono text-2xl font-light mr-2">{</span>
+                    <span class="text-white text-lg">Admin</span>
+                    <span class="text-accent font-mono text-2xl font-light ml-2">}</span>
+                </a>
+
+                <!-- Liens de navigation internes (Desktop) -->
+                <nav class="hidden md:flex items-center space-x-1" id="admin-nav">
+                    <a href="{{ path('app_admin_dashboard') }}" class="px-3 py-2 rounded-lg text-sm font-medium {% if app.request.attributes.get('_route') == 'app_admin_dashboard' %}bg-slate-800 text-white{% else %}text-slate-300 hover:bg-slate-800 hover:text-white{% endif %} transition-colors">
+                        Tableau de bord
+                    </a>
+                    <a href="{{ path('app_admin_project_create') }}" class="px-3 py-2 rounded-lg text-sm font-medium {% if app.request.attributes.get('_route') == 'app_admin_project_create' %}bg-slate-800 text-white{% else %}text-slate-300 hover:bg-slate-800 hover:text-white{% endif %} transition-colors">
+                        Nouveau Projet
+                    </a>
+                    {# Les messages sont gérés sur le dashboard pour le moment, mais on pourrait rajouter d'autres liens ici #}
+                </nav>
+            </div>
+
+            <!-- Menu Utilisateur (Droite) -->
+            <div class="flex items-center gap-4">
+                
+                <div class="hidden sm:flex items-center gap-2 border-r border-slate-700 pr-4">
+                    <a href="{{ path('app_home') }}" target="_blank" class="flex items-center text-sm font-medium text-slate-300 hover:text-white transition-colors" title="Voir le site public">
+                        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        Voir le site
+                    </a>
+                </div>
+
+                <a href="{{ path('app_admin_password') }}" class="text-sm font-medium {% if app.request.attributes.get('_route') == 'app_admin_password' %}text-brand{% else %}text-slate-300 hover:text-white{% endif %} transition-colors" title="Mot de passe">
+                    Mot de passe
+                </a>
+
+                <a href="{{ path('app_logout') }}" class="text-sm font-medium text-red-400 hover:text-red-300 transition-colors" title="Se déconnecter">
+                    Déconnexion
+                </a>
+                
+                {% if app.user %}
+                <div class="h-8 w-8 rounded-full bg-brand/20 border border-brand text-brand flex items-center justify-center text-xs font-bold uppercase shadow-sm">
+                    {{ app.user.username|slice(0, 2) }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+{% endblock %}
