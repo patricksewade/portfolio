@@ -16,42 +16,34 @@ final class HomeController extends AbstractController
     {
         $projects = $projectRepository->findBy([], ['isFeatured' => 'DESC', 'id' => 'DESC']);
 
-        $profileSummary = "Diplômé d'un Master 2 Architecte Digital et fort de 9 ans de pratique PHP (architecture POO, bases de données, ERP, bonnes pratiques modernes), j'applique aujourd'hui ces compétences fondamentales à l'écosystème Symfony. Autonome et rigoureux, je souhaite m'investir pleinement dans le développement, l'optimisation et la pérennisation de vos applications web.";
+        $profileSummary = "Fort de 9 années d'expérience en développement PHP et certifié Architecte Digital (Bac+5), je conçois des solutions web performantes et scalables. J'allie une maîtrise de la programmation orientée objet (POO) et de la conception de systèmes complexes (ERP), avec une spécialisation actuelle sur l'écosystème Symfony 7+.";
 
         $skills = [
             'Langages'                    => ['PHP 8+ (POO, typage strict)', 'SQL'],
-            'Framework & Architecture'    => ['Symfony 7+', 'MVC', 'API RESTful'],
-            'Données & ORM'               => ['MySQL / MariaDB', 'Doctrine ORM'],
-            'Qualité & Sécurité'          => ['PHPUnit', 'PHPStan', 'PSR/PER', 'SOLID', 'Clean Code'],
-            'Outils & Environnement'      => ['Composer', 'Git', 'Docker', 'WSL2'],
+            'Framework & Architecture'    => ['Symfony 7+', 'API Platform', 'MVC', 'APIs RESTful'],
+            'Données & ORM'               => ['MySQL / MariaDB', 'PostgreSQL', 'Doctrine ORM', 'Modélisation de données (MCD/MLD)'],
+            'Qualité & Sécurité'          => ['PHPUnit', 'PHPStan', 'PSR/PER', 'Principes SOLID', 'Clean Code'],
+            'Outils & Environnement'      => ['Composer', 'Git', 'Docker', 'WSL2', 'Intégration continue'],
             'Frontend'                    => ['HTML5', 'CSS3', 'JavaScript', 'Twig', 'Tailwind CSS'],
             'Méthodologies'               => ['Agile (Scrum)', 'Revue de code'],
         ];
 
         $experiences = [
             [
-                'title'       => 'Équipier polyvalent',
-                'company'     => "McDonald's",
-                'period'      => 'Nov. 2024 – Présent',
-                'location'    => 'France',
-                'description' => "Emploi alimentaire en parallèle de mes études. Travail à flux tendu, rigueur, gestion du stress et excellente dynamique d'équipe.",
-                'stack'       => '',
-            ],
-            [
-                'title'       => 'Développeur Web PHP (Freelance)',
+                'title'       => 'Développeur Web PHP & Architecte Freelance',
                 'company'     => 'Freelance',
                 'period'      => 'Sept. 2020 – Août 2024 (4 ans)',
                 'location'    => 'Cotonou, Bénin',
-                'description' => 'Analyse des besoins, modélisation de données, développement et restructuration technique globale.',
-                'stack'       => 'PHP, MySQL, JavaScript, APIs RESTful, WordPress',
+                'description' => "Accompagnement technique et stratégique de bout en bout avec un respect strict des délais de livraison sur plus de 10 projets.\n• Conseil & Architecture : Traduction précise des besoins métiers complexes en spécifications techniques et architectures logicielles.\n• Développement & Modélisation : Conception de bases de données (MCD), refonte applicative et implémentation de fonctionnalités métiers sur-mesure.",
+                'stack'       => 'PHP (POO), MySQL, API REST, JavaScript.',
             ],
             [
-                'title'       => 'Développeur PHP Fullstack / Responsable Technique',
-                'company'     => 'Logisoft Solutions / MAPCOM Technologies',
+                'title'       => 'Responsable Technique / Développeur PHP',
+                'company'     => 'LogiSoft Solutions/ MAPCOM Technologies',
                 'period'      => 'Août 2015 – Août 2020 (5 ans)',
                 'location'    => 'Cotonou, Bénin',
-                'description' => "Encadrement de l'équipe technique. Développement de modules pour ERP, audit de code et sécurisation applicative.",
-                'stack'       => 'PHP (POO), MySQL, Git, JavaScript, APIs, Sécurité',
+                'description' => "Pilotage technique des développements et garantie de la qualité logicielle au sein d'un écosystème ERP.\n• Management & Qualité : Mentorat d'une équipe de 2 développeurs, animation de revues de code (Code Reviews) et arbitrage technique.\n• Fiabilisation : Réalisation d'audits de code approfondis ayant permis une réduction de 50% des bugs applicatifs.\n• Développement métier : Conception et intégration de modules complexes pour l'ERP interne.",
+                'stack'       => 'PHP (POO), Dolibarr, MySQL, Git, JavaScript.',
             ],
             [
                 'title'       => 'Stage Développeur Web',
@@ -73,11 +65,11 @@ final class HomeController extends AbstractController
 
         $educations = [
             [
-                'degree'    => 'Master 2 Architecte Digital / Web (Bac+5)',
-                'specialty' => 'Expert en Stratégie et Transformation Digitale (RNCP Niveau 7)',
+                'degree'    => 'Architecte Digital (Bac+5)',
+                'specialty' => 'Expert en Stratégie et Transformation Digitale (Titre RNCP Niveau 7)',
                 'school'    => 'Digital School of Paris (DSP)',
                 'location'  => 'Vincennes, France',
-                'period'    => 'Oct. 2024 - Déc. 2025',
+                'period'    => 'Oct. 2024 - Jan. 2026',
             ],
             [
                 'degree'    => 'DEESWEB (Bac+3)',
@@ -102,13 +94,7 @@ final class HomeController extends AbstractController
                 'duration' => '32 heures',
                 'date'     => '24 mai 2026',
                 'icon'     => 'php',
-            ],
-            [
-                'title'    => 'HTML & CSS (5 / 3)',
-                'issuer'   => 'Dyma',
-                'duration' => '46 heures',
-                'date'     => '26 mai 2026',
-                'icon'     => 'html5',
+                'url'      => 'docs/certifications/Certificat_PHP_Dyma.pdf',
             ],
             [
                 'title'    => 'Git (2.51)',
@@ -116,6 +102,15 @@ final class HomeController extends AbstractController
                 'duration' => '9 heures',
                 'date'     => '11 juin 2026',
                 'icon'     => 'git',
+                'url'      => 'docs/certifications/Certificat_Git_Dyma.pdf',
+            ],
+            [
+                'title'    => 'HTML & CSS (5 / 3)',
+                'issuer'   => 'Dyma',
+                'duration' => '46 heures',
+                'date'     => '26 mai 2026',
+                'icon'     => 'html5',
+                'url'      => 'docs/certifications/Certificat_HTML_CSS_Dyma.pdf',
             ],
         ];
         
