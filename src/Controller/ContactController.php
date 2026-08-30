@@ -62,7 +62,7 @@ final class ContactController extends AbstractController
             // Envoi de l'email
             $email = (new Email())
                 ->from($this->getParameter('app.mailer_from'))
-                ->to($this->getParameter('app.mailer_from')) // On s'envoie l'email à soi-même
+                ->to($this->getParameter('app.mailer_to'))
                 ->replyTo($dto->email)
                 ->subject('Nouveau message de contact : ' . $dto->subject)
                 ->text("Nouveau message de : {$dto->name} <{$dto->email}>\n\nSujet : {$dto->subject}\n\n{$dto->message}");

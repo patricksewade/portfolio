@@ -12,7 +12,7 @@ name: Règles Globales du Projet
 
 # Hygiène et Sécurité du Dépôt (Nettoyage Obligatoire)
 
-- **RÈGLE DE CONFIDENTIALITÉ ABSOLUE** : Il est formellement interdit d'inscrire ou de conserver des données sensibles (identifiants, mots de passe, clés d'API, hôtes FTP/MySQL, chemins physiques absolus de serveurs distants) dans les fichiers versionnés du projet, y compris dans les documents de mémoire ou de configuration du dossier `.agents/`. Utilise systématiquement des variables génériques (ex: `[FTP_USERNAME]`, `[SERVER_PATH]`). Ces données réelles doivent résider uniquement dans le fichier `.env.local` ou dans un gestionnaire de secrets.
+- **RÈGLE DE CONFIDENTIALITÉ ABSOLUE** : Il est formellement interdit d'inscrire ou de conserver des données sensibles (emails personnels, identifiants, mots de passe, clés d'API, hôtes FTP/MySQL, chemins physiques absolus) dans les fichiers versionnés du projet, **en particulier dans les documents du dossier `.agents/`**. Utilise systématiquement des balises génériques (ex: `[EMAIL_PERSONNEL]`, `[FTP_USERNAME]`). Ces données réelles ne doivent exister QUE dans les fichiers `.env` locaux non-versionnés.
 - Tu es autorisé à créer des fichiers temporaires (ex: `test.php`, `debug.json`, `dump.php`) uniquement pour valider tes hypothèses techniques en cours de tâche.
 - RÈGLE ABSOLUE : Dès que ton test est validé et que le code final est intégré, tu DOIS impérativement supprimer de toi-même tous les fichiers de test que tu as générés.
 - Il est strictement interdit de laisser subsister un fichier de debug ou de test dans l'arborescence avant de clôturer ton intervention.
