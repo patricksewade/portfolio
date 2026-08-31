@@ -31,8 +31,8 @@
 - Tests : WebTestCase et Panther pour les tests fonctionnels.
 
 ## 6. Évolution & Roadmap
-- **Migration Symfony 7.4 LTS — ✅ ACCOMPLIE (Jalons 1 à 6)** : Bootstrapping, Modèles/Doctrine, Sécurité, Contrôleurs (CRUD Projets, actions Admin et intégration des KPIs), Twig avec base (templates restaurés depuis v1.1.0, convertis intégralement en syntaxe Twig sans balises PHP résiduelles et standardisés en UTF-8), Mailer, et tests fonctionnels basiques.
-- L'ancienne version custom MVC (Release v1.1.0) a été archivée dans `./.agents/rules/archive/2026-08-27_release_v1.1.0_custom_mvc.md`. La fin de la migration est détaillée dans `./.agents/rules/archive/2026-08-28_migration_symfony_74_achevee.md`.
+- **Release Actuelle — v2.0.0 (Symfony 7.4 LTS)** : Branche `main` consolidée et poussée sur `origin` avec l'historique complet des tags `v1.0.0`, `v1.1.0` et `v2.0.0`. Regroupe le framework Symfony 7.4 LTS, la refonte UI/UX mobile-first Tailwind CSS, la conformité RGPD/mentions légales et le durcissement sécurité.
+- **Archives de Jalons** : Release v2.0.0 (`./.agents/rules/archive/2026-08-31_release_v2.0.0_symfony_74.md`), Fin de migration Symfony (`./.agents/rules/archive/2026-08-28_migration_symfony_74_achevee.md`), et Release v1.1.0 MVC custom (`./.agents/rules/archive/2026-08-27_release_v1.1.0_custom_mvc.md`).
 
 ## 7. Architecture Agentique (Antigravity 2.0)
 - **Personnalisation & Outils** : Workspace Rules, Skills, Subagents, Hooks (standards Antigravity).
