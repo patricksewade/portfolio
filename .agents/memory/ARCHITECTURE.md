@@ -5,6 +5,7 @@
 - Autoloading **PSR-4** via Composer : namespace `App\` → `src/`.
 - Respect des standards Symfony : Injection de dépendances via Autowiring/Autoconfiguration.
 - Fichier `.env` standard géré par Symfony Dotenv.
+- **Frontend / UX** : Design System Mobile-First avec Tailwind CSS (menus Overlay sur mobile, Breakpoints `lg` pour le desktop, manipulation de l'ordre visuel via utilitaires de flux).
 
 ## 2. Arborescence & Couches (Symfony)
 - `/public` : Point d'entrée unique `index.php`, assets.
