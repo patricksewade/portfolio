@@ -24,7 +24,7 @@ final class AdminProfileController extends AbstractController
         Request $request,
         ValidatorInterface $validator,
         UserPasswordHasherInterface $passwordHasher,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
     ): Response {
         /** @var Admin $user */
         $user = $this->getUser();
@@ -33,6 +33,7 @@ final class AdminProfileController extends AbstractController
         if ($request->isMethod('POST')) {
             if (!$this->isCsrfTokenValid('change_password', $request->request->get('csrf_token'))) {
                 $this->addFlash('error', 'Jeton de sécurité invalide.');
+
                 return $this->redirectToRoute('app_admin_password');
             }
 
@@ -42,19 +43,21 @@ final class AdminProfileController extends AbstractController
 
             $errors = $validator->validate($dto);
 
-            if (count($errors) > 0) {
+            if (\count($errors) > 0) {
                 foreach ($errors as $error) {
                     $this->addFlash('error', $error->getMessage());
                 }
+
                 return $this->redirectToRoute('app_admin_password');
             }
-            
+
             $hashedPassword = $passwordHasher->hashPassword($user, $dto->newPassword);
             $user->setPassword($hashedPassword);
-            
+
             $em->flush();
 
             $this->addFlash('success', 'Votre mot de passe a été modifié avec succès.');
+
             return $this->redirectToRoute('app_admin_dashboard');
         }
 

@@ -33,7 +33,7 @@ class ProjectDto
     #[Assert\Image(
         maxSize: '2M',
         mimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
-        mimeTypesMessage: 'Seules les images JPEG, PNG et WEBP sont autorisées.'
+        mimeTypesMessage: 'Seules les images JPEG, PNG et WEBP sont autorisées.',
     )]
     public ?UploadedFile $image = null;
 }

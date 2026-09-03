@@ -59,6 +59,7 @@ class Project
     public function setTitle(string $title): static
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -70,6 +71,7 @@ class Project
     public function setDescription(string $description): static
     {
         $this->description = $description;
+
         return $this;
     }
 
@@ -81,6 +83,7 @@ class Project
     public function setTechStack(string $techStack): static
     {
         $this->techStack = $techStack;
+
         return $this;
     }
 
@@ -92,6 +95,7 @@ class Project
     public function setIsFeatured(bool $isFeatured): static
     {
         $this->isFeatured = $isFeatured;
+
         return $this;
     }
 
@@ -103,6 +107,7 @@ class Project
     public function setGithubUrl(?string $githubUrl): static
     {
         $this->githubUrl = $githubUrl;
+
         return $this;
     }
 
@@ -114,6 +119,7 @@ class Project
     public function setLiveDemoUrl(?string $liveDemoUrl): static
     {
         $this->liveDemoUrl = $liveDemoUrl;
+
         return $this;
     }
 
@@ -125,6 +131,7 @@ class Project
     public function setImageUrl(?string $imageUrl): static
     {
         $this->imageUrl = $imageUrl;
+
         return $this;
     }
 
@@ -136,6 +143,7 @@ class Project
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 }

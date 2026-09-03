@@ -53,6 +53,7 @@ class Message
     public function setSenderName(string $senderName): static
     {
         $this->senderName = $senderName;
+
         return $this;
     }
 
@@ -64,6 +65,7 @@ class Message
     public function setSenderEmail(string $senderEmail): static
     {
         $this->senderEmail = $senderEmail;
+
         return $this;
     }
 
@@ -75,6 +77,7 @@ class Message
     public function setSubject(string $subject): static
     {
         $this->subject = $subject;
+
         return $this;
     }
 
@@ -86,6 +89,7 @@ class Message
     public function setContent(string $content): static
     {
         $this->content = $content;
+
         return $this;
     }
 
@@ -97,6 +101,7 @@ class Message
     public function setStatus(string $status): static
     {
         $this->status = $status;
+
         return $this;
     }
 
@@ -108,6 +113,7 @@ class Message
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 }

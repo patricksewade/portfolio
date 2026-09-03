@@ -18,7 +18,7 @@ final class AdminController extends AbstractController
     #[Route(path: '/dashboard', name: 'app_admin_dashboard', methods: ['GET'])]
     public function dashboard(
         ProjectRepository $projectRepository,
-        MessageRepository $messageRepository
+        MessageRepository $messageRepository,
     ): Response {
         $projects = $projectRepository->findBy([], ['id' => 'DESC']);
         $messages = $messageRepository->findBy([], ['id' => 'DESC']);
@@ -46,16 +46,17 @@ final class AdminController extends AbstractController
     public function markMessageAsRead(
         \Symfony\Component\HttpFoundation\Request $request,
         MessageRepository $messageRepository,
-        \Doctrine\ORM\EntityManagerInterface $em
+        \Doctrine\ORM\EntityManagerInterface $em,
     ): Response {
         if (!$this->isCsrfTokenValid('message_read', $request->request->get('csrf_token'))) {
             $this->addFlash('error', 'Jeton CSRF invalide.');
+
             return $this->redirectToRoute('app_admin_dashboard');
         }
 
         $id = $request->request->get('message_id');
         $message = $messageRepository->find((int) $id);
-        
+
         if ($message) {
             $message->setStatus('read');
             $em->flush();

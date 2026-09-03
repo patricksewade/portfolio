@@ -25,27 +25,28 @@ final class AdminProjectController extends AbstractController
     public function create(
         Request $request,
         ValidatorInterface $validator,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
     ): Response {
         $dto = new ProjectDto();
 
         if ($request->isMethod('POST')) {
             if (!$this->isCsrfTokenValid('project_form', $request->request->get('csrf_token'))) {
                 $this->addFlash('error', 'Jeton de sécurité invalide.');
+
                 return $this->redirectToRoute('app_admin_dashboard');
             }
 
-            $dto->title = trim((string)$request->request->get('title'));
-            $dto->description = trim((string)$request->request->get('description'));
-            $dto->techStack = trim((string)$request->request->get('tech_stack'));
-            $dto->githubUrl = trim((string)$request->request->get('github_url')) ?: null;
-            $dto->liveDemoUrl = trim((string)$request->request->get('live_demo_url')) ?: null;
-            $dto->isFeatured = (bool)$request->request->get('is_featured');
+            $dto->title = trim((string) $request->request->get('title'));
+            $dto->description = trim((string) $request->request->get('description'));
+            $dto->techStack = trim((string) $request->request->get('tech_stack'));
+            $dto->githubUrl = trim((string) $request->request->get('github_url')) ?: null;
+            $dto->liveDemoUrl = trim((string) $request->request->get('live_demo_url')) ?: null;
+            $dto->isFeatured = (bool) $request->request->get('is_featured');
             $dto->image = $request->files->get('image');
 
             $errors = $validator->validate($dto);
 
-            if (count($errors) > 0) {
+            if (\count($errors) > 0) {
                 foreach ($errors as $error) {
                     $this->addFlash('error', $error->getMessage());
                 }
@@ -68,6 +69,7 @@ final class AdminProjectController extends AbstractController
                 $em->flush();
 
                 $this->addFlash('success', 'Le projet a été ajouté avec succès.');
+
                 return $this->redirectToRoute('app_admin_dashboard');
             }
         }
@@ -85,12 +87,13 @@ final class AdminProjectController extends AbstractController
         Request $request,
         ProjectRepository $projectRepository,
         ValidatorInterface $validator,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
     ): Response {
         $project = $projectRepository->find($id);
 
         if (!$project) {
             $this->addFlash('error', 'Projet introuvable.');
+
             return $this->redirectToRoute('app_admin_dashboard');
         }
 
@@ -106,21 +109,22 @@ final class AdminProjectController extends AbstractController
         if ($request->isMethod('POST')) {
             if (!$this->isCsrfTokenValid('project_form', $request->request->get('csrf_token'))) {
                 $this->addFlash('error', 'Jeton de sécurité invalide.');
+
                 return $this->redirectToRoute('app_admin_dashboard');
             }
 
-            $dto->title = trim((string)$request->request->get('title'));
-            $dto->description = trim((string)$request->request->get('description'));
-            $dto->techStack = trim((string)$request->request->get('tech_stack'));
-            $dto->githubUrl = trim((string)$request->request->get('github_url')) ?: null;
-            $dto->liveDemoUrl = trim((string)$request->request->get('live_demo_url')) ?: null;
-            $dto->isFeatured = (bool)$request->request->get('is_featured');
+            $dto->title = trim((string) $request->request->get('title'));
+            $dto->description = trim((string) $request->request->get('description'));
+            $dto->techStack = trim((string) $request->request->get('tech_stack'));
+            $dto->githubUrl = trim((string) $request->request->get('github_url')) ?: null;
+            $dto->liveDemoUrl = trim((string) $request->request->get('live_demo_url')) ?: null;
+            $dto->isFeatured = (bool) $request->request->get('is_featured');
             $dto->image = $request->files->get('image');
-            $removeImage = (bool)$request->request->get('remove_image');
+            $removeImage = (bool) $request->request->get('remove_image');
 
             $errors = $validator->validate($dto);
 
-            if (count($errors) > 0) {
+            if (\count($errors) > 0) {
                 foreach ($errors as $error) {
                     $this->addFlash('error', $error->getMessage());
                 }
@@ -145,6 +149,7 @@ final class AdminProjectController extends AbstractController
                 $em->flush();
 
                 $this->addFlash('success', 'Le projet a été modifié avec succès.');
+
                 return $this->redirectToRoute('app_admin_dashboard');
             }
         }
@@ -162,14 +167,15 @@ final class AdminProjectController extends AbstractController
     public function delete(
         Request $request,
         ProjectRepository $projectRepository,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
     ): Response {
         if (!$this->isCsrfTokenValid('project_delete', $request->request->get('csrf_token'))) {
             $this->addFlash('error', 'Jeton de sécurité invalide.');
+
             return $this->redirectToRoute('app_admin_dashboard');
         }
 
-        $id = (int)$request->request->get('id');
+        $id = (int) $request->request->get('id');
         $project = $projectRepository->find($id);
 
         if ($project) {
@@ -184,26 +190,26 @@ final class AdminProjectController extends AbstractController
 
     private function handleImageUpload(UploadedFile $file): string
     {
-        $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $originalFilename = pathinfo($file->getClientOriginalName(), \PATHINFO_FILENAME);
         // Optionnel: utiliser un slugger pour l'originalFilename
-        $newFilename = uniqid('proj_') . '.' . $file->guessExtension();
-        
+        $newFilename = uniqid('proj_').'.'.$file->guessExtension();
+
         // On récupère le paramètre d'upload via Container ou on le hardcode (les images vont dans public/uploads/projects)
-        $uploadDir = $this->getParameter('kernel.project_dir') . '/public/uploads/projects';
-        
+        $uploadDir = $this->getParameter('kernel.project_dir').'/public/uploads/projects';
+
         try {
             $file->move($uploadDir, $newFilename);
         } catch (FileException $e) {
             throw new \Exception("Échec de l'upload de l'image");
         }
 
-        return '/uploads/projects/' . $newFilename;
+        return '/uploads/projects/'.$newFilename;
     }
 
     private function deleteImageFile(?string $imageUrl): void
     {
         if ($imageUrl) {
-            $path = $this->getParameter('kernel.project_dir') . '/public' . $imageUrl;
+            $path = $this->getParameter('kernel.project_dir').'/public'.$imageUrl;
             if (file_exists($path) && is_file($path)) {
                 unlink($path);
             }
