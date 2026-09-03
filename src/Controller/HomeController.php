@@ -22,8 +22,8 @@ final class HomeController extends AbstractController
             'Langages'                    => ['PHP 8+ (POO, typage strict)', 'SQL'],
             'Framework & Architecture'    => ['Symfony 7+', 'API Platform', 'MVC', 'APIs RESTful'],
             'Données & ORM'               => ['MySQL / MariaDB', 'PostgreSQL', 'Doctrine ORM', 'Modélisation de données (MCD/MLD)'],
-            'Qualité & Sécurité'          => ['PHPUnit', 'PHPStan', 'PSR/PER', 'Principes SOLID', 'Clean Code'],
-            'Outils & Environnement'      => ['Composer', 'Git', 'Docker', 'WSL2', 'Intégration continue'],
+            'Qualité & Sécurité'          => ['PHPUnit', 'PHPStan', 'PHP-CS-Fixer', 'Rector', 'Conventions PSR-12 / PER-CS', 'Principes SOLID', 'Clean Code'],
+            'Outils & Environnement'      => ['Composer', 'Git', 'Docker', 'Docker Compose', 'WSL2', 'Intégration continue', 'Xdebug', 'Symfony Profiler'],
             'Frontend'                    => ['HTML5', 'CSS3', 'JavaScript', 'Twig', 'Tailwind CSS'],
             'Méthodologies'               => ['Agile (Scrum)', 'Revue de code'],
         ];
