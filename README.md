@@ -48,3 +48,17 @@ L'arborescence suit les standards Symfony :
    ```bash
    symfony server:start
    ```
+
+## 🧪 Qualité du Code
+
+Le projet utilise **PHP CS Fixer** configuré selon les standards Symfony et PER-CS avec typage strict :
+
+- **Vérifier la conformité du code** :
+  ```bash
+  composer cs:check
+  ```
+- **Formater et corriger automatiquement le code** :
+  ```bash
+  composer cs:fix
+  ```
+
