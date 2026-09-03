@@ -29,6 +29,7 @@
 - Emails : Composant Symfony Mailer.
 - Uploads : Gestion d'upload (à documenter, par défaut Symfony Forms + contraintes).
 - Tests : WebTestCase et Panther pour les tests fonctionnels.
+- Qualité : PHP CS Fixer (`friendsofphp/php-cs-fixer`) configuré en `@Symfony` et `@PHP83Migration` (scripts `cs:check`/`cs:fix`).
 
 ## 6. Évolution & Roadmap
 - **Release Actuelle — v2.0.0 (Symfony 7.4 LTS)** : Branche `main` consolidée, incluant la documentation exhaustive du projet (`README.md`), et poussée sur `origin` avec l'historique complet des tags `v1.0.0`, `v1.1.0` et `v2.0.0`. Regroupe le framework Symfony 7.4 LTS, la refonte UI/UX mobile-first Tailwind CSS, la conformité RGPD/mentions légales et le durcissement sécurité.
