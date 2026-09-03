@@ -31,12 +31,12 @@
 - Tests : WebTestCase et Panther pour les tests fonctionnels.
 
 ## 6. Évolution & Roadmap
-- **Release Actuelle — v2.0.0 (Symfony 7.4 LTS)** : Branche `main` consolidée et poussée sur `origin` avec l'historique complet des tags `v1.0.0`, `v1.1.0` et `v2.0.0`. Regroupe le framework Symfony 7.4 LTS, la refonte UI/UX mobile-first Tailwind CSS, la conformité RGPD/mentions légales et le durcissement sécurité.
+- **Release Actuelle — v2.0.0 (Symfony 7.4 LTS)** : Branche `main` consolidée, incluant la documentation exhaustive du projet (`README.md`), et poussée sur `origin` avec l'historique complet des tags `v1.0.0`, `v1.1.0` et `v2.0.0`. Regroupe le framework Symfony 7.4 LTS, la refonte UI/UX mobile-first Tailwind CSS, la conformité RGPD/mentions légales et le durcissement sécurité.
 - **Archives de Jalons** : Release v2.0.0 (`./.agents/rules/archive/2026-08-31_release_v2.0.0_symfony_74.md`), Fin de migration Symfony (`./.agents/rules/archive/2026-08-28_migration_symfony_74_achevee.md`), et Release v1.1.0 MVC custom (`./.agents/rules/archive/2026-08-27_release_v1.1.0_custom_mvc.md`).
 
 ## 7. Architecture Agentique (Antigravity 2.0)
 - **Personnalisation & Outils** : Workspace Rules, Skills, Subagents, Hooks (standards Antigravity).
-- **Mémoire & Documentation** : Compétence `project-memory` + sous-agent `archivist` pour mises à jour en arrière-plan.
+- **Mémoire & Documentation** : Compétence `project-memory` + sous-agent `archivist` pour mises à jour en arrière-plan. Le `README.md` racine est généré dynamiquement depuis ces fichiers de mémoire.
 ## 8. Déploiement & Hébergement
 - **Environnement Cible** : Hébergement Byet.host (Offre Free Hosting, PHP 8.3.27, MariaDB 11.4).
 - **Contraintes** : Déploiement FTP (pas de SSH/CLI), limitation d'envoi d'emails (utilisation de SMTP externe obligatoire), document root restreint à `/htdocs`.
