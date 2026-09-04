@@ -30,7 +30,7 @@ final class AdminProjectController extends AbstractController
         $dto = new ProjectDto();
 
         if ($request->isMethod('POST')) {
-            if (!$this->isCsrfTokenValid('project_form', $request->request->get('csrf_token'))) {
+            if (!$this->isCsrfTokenValid('project_form', (string) $request->request->get('csrf_token'))) {
                 $this->addFlash('error', 'Jeton de sécurité invalide.');
 
                 return $this->redirectToRoute('app_admin_dashboard');
@@ -42,7 +42,10 @@ final class AdminProjectController extends AbstractController
             $dto->githubUrl = trim((string) $request->request->get('github_url')) ?: null;
             $dto->liveDemoUrl = trim((string) $request->request->get('live_demo_url')) ?: null;
             $dto->isFeatured = (bool) $request->request->get('is_featured');
-            $dto->image = $request->files->get('image');
+            $imageFile = $request->files->get('image');
+            if ($imageFile instanceof UploadedFile || $imageFile === null) {
+                $dto->image = $imageFile;
+            }
 
             $errors = $validator->validate($dto);
 
@@ -107,7 +110,7 @@ final class AdminProjectController extends AbstractController
         // L'image existante est stockée dans l'entité, le DTO gère le nouvel upload
 
         if ($request->isMethod('POST')) {
-            if (!$this->isCsrfTokenValid('project_form', $request->request->get('csrf_token'))) {
+            if (!$this->isCsrfTokenValid('project_form', (string) $request->request->get('csrf_token'))) {
                 $this->addFlash('error', 'Jeton de sécurité invalide.');
 
                 return $this->redirectToRoute('app_admin_dashboard');
@@ -119,7 +122,10 @@ final class AdminProjectController extends AbstractController
             $dto->githubUrl = trim((string) $request->request->get('github_url')) ?: null;
             $dto->liveDemoUrl = trim((string) $request->request->get('live_demo_url')) ?: null;
             $dto->isFeatured = (bool) $request->request->get('is_featured');
-            $dto->image = $request->files->get('image');
+            $imageFile = $request->files->get('image');
+            if ($imageFile instanceof UploadedFile || $imageFile === null) {
+                $dto->image = $imageFile;
+            }
             $removeImage = (bool) $request->request->get('remove_image');
 
             $errors = $validator->validate($dto);
@@ -169,7 +175,7 @@ final class AdminProjectController extends AbstractController
         ProjectRepository $projectRepository,
         EntityManagerInterface $em,
     ): Response {
-        if (!$this->isCsrfTokenValid('project_delete', $request->request->get('csrf_token'))) {
+        if (!$this->isCsrfTokenValid('project_delete', (string) $request->request->get('csrf_token'))) {
             $this->addFlash('error', 'Jeton de sécurité invalide.');
 
             return $this->redirectToRoute('app_admin_dashboard');

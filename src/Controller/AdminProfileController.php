@@ -31,7 +31,7 @@ final class AdminProfileController extends AbstractController
         $dto = new ChangePasswordDto();
 
         if ($request->isMethod('POST')) {
-            if (!$this->isCsrfTokenValid('change_password', $request->request->get('csrf_token'))) {
+            if (!$this->isCsrfTokenValid('change_password', (string) $request->request->get('csrf_token'))) {
                 $this->addFlash('error', 'Jeton de sécurité invalide.');
 
                 return $this->redirectToRoute('app_admin_password');

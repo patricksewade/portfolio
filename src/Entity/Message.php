@@ -18,22 +18,22 @@ class Message
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $senderName = null;
+    private string $senderName;
 
     #[ORM\Column(length: 255)]
-    private ?string $senderEmail = null;
+    private string $senderEmail;
 
     #[ORM\Column(length: 255)]
-    private ?string $subject = null;
+    private string $subject;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $content = null;
+    private string $content;
 
     #[ORM\Column(length: 50, options: ['default' => 'unread'])]
-    private ?string $status = 'unread';
+    private string $status = 'unread';
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    private \DateTimeImmutable $createdAt;
 
     public function __construct()
     {
@@ -45,7 +45,7 @@ class Message
         return $this->id;
     }
 
-    public function getSenderName(): ?string
+    public function getSenderName(): string
     {
         return $this->senderName;
     }
@@ -57,7 +57,7 @@ class Message
         return $this;
     }
 
-    public function getSenderEmail(): ?string
+    public function getSenderEmail(): string
     {
         return $this->senderEmail;
     }
@@ -69,7 +69,7 @@ class Message
         return $this;
     }
 
-    public function getSubject(): ?string
+    public function getSubject(): string
     {
         return $this->subject;
     }
@@ -81,7 +81,7 @@ class Message
         return $this;
     }
 
-    public function getContent(): ?string
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -93,7 +93,7 @@ class Message
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): string
     {
         return $this->status;
     }
@@ -105,7 +105,7 @@ class Message
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }

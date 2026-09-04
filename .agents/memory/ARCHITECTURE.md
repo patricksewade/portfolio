@@ -29,11 +29,11 @@
 - Emails : Composant Symfony Mailer.
 - Uploads : Gestion d'upload (à documenter, par défaut Symfony Forms + contraintes).
 - Tests : WebTestCase et Panther pour les tests fonctionnels.
-- Qualité : PHP CS Fixer (`friendsofphp/php-cs-fixer`) configuré (`.php-cs-fixer.dist.php`) avec `@PER-CS`, `@Symfony`, `@Symfony:risky` et typage strict (scripts `cs:check`/`cs:fix`).
+- Qualité : PHP CS Fixer (`friendsofphp/php-cs-fixer`, scripts `cs:check`/`cs:fix`) et PHPStan niveau 8 (`phpstan/phpstan`, script `phpstan` via `phpstan.dist.neon`, vérifications de types natives et `treatPhpDocTypesAsCertain: false`).
 
 ## 6. Évolution & Roadmap
 - **Release Actuelle — v2.0.0 (Symfony 7.4 LTS)** : Branche `main` consolidée, incluant la documentation exhaustive du projet (`README.md`), et poussée sur `origin` avec l'historique complet des tags `v1.0.0`, `v1.1.0` et `v2.0.0`. Regroupe le framework Symfony 7.4 LTS, la refonte UI/UX mobile-first Tailwind CSS, la conformité RGPD/mentions légales et le durcissement sécurité.
-- **Qualité de Code & Outillage (Post-v2.0.0)** : Branche `chore/code-quality-tools` fusionnée dans `main`. Intégration de PHP CS Fixer (`cs:check` / `cs:fix`) avec typage strict (`declare(strict_types=1)`), formatage PER-CS / Symfony sur l'intégralité des fichiers PHP (`src/`, `tests/`, `config/`).
+- **Qualité de Code & Outillage (Post-v2.0.0)** : Intégration de PHP CS Fixer (PER-CS) et PHPStan (Niveau 8). Implémentation du typage strict sur les entités Doctrine (sans nullabilité superflue), utilisation de checks natifs (`is_string()`, `instanceof UploadedFile`) et casts sur les données Symfony pour sécuriser contre le type `mixed`.
 - **Archives de Jalons** : Release v2.0.0 (`./.agents/rules/archive/2026-08-31_release_v2.0.0_symfony_74.md`), Fin de migration Symfony (`./.agents/rules/archive/2026-08-28_migration_symfony_74_achevee.md`), et Release v1.1.0 MVC custom (`./.agents/rules/archive/2026-08-27_release_v1.1.0_custom_mvc.md`).
 
 ## 7. Architecture Agentique (Antigravity 2.0)

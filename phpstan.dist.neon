@@ -1,0 +1,25 @@
+parameters:
+    level: 8
+    paths:
+        - src
+        - tests
+        - config
+
+    # Configuration de l'extension Symfony
+    symfony:
+        containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
+
+    # Configuration de l'extension Doctrine
+    doctrine:
+        objectManagerLoader: tests/object-manager.php
+
+    # Règles de typage strict et réduction des faux positifs
+    checkExplicitMixed: true
+    checkBenevolentUnionTypes: true
+    treatPhpDocTypesAsCertain: false
+
+    # Fichiers et dossiers exclus de l'analyse
+    excludePaths:
+        - var/*
+        - vendor/*
+        - tests/bootstrap.php

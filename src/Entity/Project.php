@@ -18,16 +18,16 @@ class Project
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    private string $title;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $description = null;
+    private string $description;
 
     #[ORM\Column(length: 255)]
-    private ?string $techStack = null;
+    private string $techStack;
 
     #[ORM\Column]
-    private ?bool $isFeatured = null;
+    private bool $isFeatured = false;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $githubUrl = null;
@@ -39,7 +39,7 @@ class Project
     private ?string $imageUrl = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    private \DateTimeImmutable $createdAt;
 
     public function __construct()
     {
@@ -51,7 +51,7 @@ class Project
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -63,7 +63,7 @@ class Project
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -75,7 +75,7 @@ class Project
         return $this;
     }
 
-    public function getTechStack(): ?string
+    public function getTechStack(): string
     {
         return $this->techStack;
     }
@@ -87,7 +87,7 @@ class Project
         return $this;
     }
 
-    public function isFeatured(): ?bool
+    public function isFeatured(): bool
     {
         return $this->isFeatured;
     }
@@ -135,7 +135,7 @@ class Project
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }

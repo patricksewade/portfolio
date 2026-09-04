@@ -48,7 +48,7 @@ final class AdminController extends AbstractController
         MessageRepository $messageRepository,
         \Doctrine\ORM\EntityManagerInterface $em,
     ): Response {
-        if (!$this->isCsrfTokenValid('message_read', $request->request->get('csrf_token'))) {
+        if (!$this->isCsrfTokenValid('message_read', (string) $request->request->get('csrf_token'))) {
             $this->addFlash('error', 'Jeton CSRF invalide.');
 
             return $this->redirectToRoute('app_admin_dashboard');
