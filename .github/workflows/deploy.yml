@@ -1,0 +1,67 @@
+name: CI/CD Pipeline - Quality & Alwaysdata Deployment
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+concurrency:
+  group: production_deployment
+  cancel-in-progress: false
+
+jobs:
+  quality-assurance:
+    name: Code Quality (PHPStan & PHP CS Fixer)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, intl, pdo, pdo_mysql, ctype, iconv
+          coverage: none
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Run PHP CS Fixer check
+        run: composer cs:check
+
+      - name: Run PHPStan analysis (Level 8)
+        run: composer phpstan
+
+  deploy-production:
+    name: Deploy to Alwaysdata
+    needs: quality-assurance
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Execute deployment commands via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script_stop: true
+          script: |
+            cd /home/ep-sewade/portfolio
+            git pull origin main
+            composer install --no-dev --optimize-autoloader --no-interaction
+            php bin/console doctrine:migrations:migrate --no-interaction
+            php bin/console tailwind:build --minify
+            php bin/console asset-map:compile
+            php bin/console cache:clear --no-debug

@@ -43,7 +43,7 @@ final class AdminProjectController extends AbstractController
             $dto->liveDemoUrl = trim((string) $request->request->get('live_demo_url')) ?: null;
             $dto->isFeatured = (bool) $request->request->get('is_featured');
             $imageFile = $request->files->get('image');
-            if ($imageFile instanceof UploadedFile || $imageFile === null) {
+            if ($imageFile instanceof UploadedFile || null === $imageFile) {
                 $dto->image = $imageFile;
             }
 
@@ -123,7 +123,7 @@ final class AdminProjectController extends AbstractController
             $dto->liveDemoUrl = trim((string) $request->request->get('live_demo_url')) ?: null;
             $dto->isFeatured = (bool) $request->request->get('is_featured');
             $imageFile = $request->files->get('image');
-            if ($imageFile instanceof UploadedFile || $imageFile === null) {
+            if ($imageFile instanceof UploadedFile || null === $imageFile) {
                 $dto->image = $imageFile;
             }
             $removeImage = (bool) $request->request->get('remove_image');

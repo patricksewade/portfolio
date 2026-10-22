@@ -20,6 +20,7 @@ $finder = (new Finder())
     ])
     ->notPath([
         'bundles.php',
+        'reference.php',
     ]);
 
 return (new Config())
@@ -48,9 +49,10 @@ return (new Config())
             'scope' => 'namespaced',
             'strict' => true,
         ],
-        'void_return' => true,
-        'trailing_comma_in_multiline' => [
-            'elements' => ['arrays', 'arguments', 'parameters', 'match'],
+        'global_namespace_import' => [
+            'import_classes' => false,
+            'import_constants' => false,
+            'import_functions' => false,
         ],
     ])
     ->setFinder($finder)

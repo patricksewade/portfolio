@@ -48,7 +48,7 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return $this->username === '' ? 'admin' : $this->username;
+        return '' === $this->username ? 'admin' : $this->username;
     }
 
     /**
