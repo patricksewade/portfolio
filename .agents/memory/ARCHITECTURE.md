@@ -33,13 +33,16 @@
 
 ## 6. Évolution & Roadmap
 - **Release Actuelle — v2.0.0 (Symfony 7.4 LTS)** : Branche `main` consolidée, incluant la documentation exhaustive du projet (`README.md`), et poussée sur `origin` avec l'historique complet des tags `v1.0.0`, `v1.1.0` et `v2.0.0`. Regroupe le framework Symfony 7.4 LTS, la refonte UI/UX mobile-first Tailwind CSS, la conformité RGPD/mentions légales et le durcissement sécurité.
-- **Qualité de Code & Outillage (Post-v2.0.0)** : Intégration de PHP CS Fixer (PER-CS) et PHPStan (Niveau 8). Implémentation du typage strict sur les entités Doctrine (sans nullabilité superflue), utilisation de checks natifs (`is_string()`, `instanceof UploadedFile`) et casts sur les données Symfony pour sécuriser contre le type `mixed`.
-- **Archives de Jalons** : Release v2.0.0 (`./.agents/rules/archive/2026-08-31_release_v2.0.0_symfony_74.md`), Fin de migration Symfony (`./.agents/rules/archive/2026-08-28_migration_symfony_74_achevee.md`), et Release v1.1.0 MVC custom (`./.agents/rules/archive/2026-08-27_release_v1.1.0_custom_mvc.md`).
+- **Qualité de Code & Outillage** : Intégration de PHP CS Fixer (PER-CS) et PHPStan (Niveau 8). Typage strict sur les entités Doctrine, contrôles natifs et casts sur données Symfony.
+- **Mise en Production & Pipeline CI/CD** : Déploiement sur Alwaysdata (`https://ep-sewade.fr`) avec pipeline GitHub Actions (`.github/workflows/deploy.yml`) automatisant validation qualité (PHPStan L8, PHP CS Fixer) et déploiement SSH.
+- **Archives de Jalons** : Migration Alwaysdata & CI/CD (`./.agents/rules/archive/2026-10-22_migration_alwaysdata_ci_cd.md`), Release v2.0.0 (`./.agents/rules/archive/2026-08-31_release_v2.0.0_symfony_74.md`), Fin de migration Symfony (`./.agents/rules/archive/2026-08-28_migration_symfony_74_achevee.md`), Release v1.1.0 MVC custom (`./.agents/rules/archive/2026-08-27_release_v1.1.0_custom_mvc.md`).
 
 ## 7. Architecture Agentique (Antigravity 2.0)
 - **Personnalisation & Outils** : Workspace Rules, Skills, Subagents, Hooks (standards Antigravity).
 - **Mémoire & Documentation** : Compétence `project-memory` + sous-agent `archivist` pour mises à jour en arrière-plan. Le `README.md` racine est généré dynamiquement depuis ces fichiers de mémoire.
+
 ## 8. Déploiement & Hébergement
-- **Environnement Cible** : Hébergement Byet.host (Offre Free Hosting, PHP 8.3.27, MariaDB 11.4).
-- **Contraintes** : Déploiement FTP (pas de SSH/CLI), limitation d'envoi d'emails (utilisation de SMTP externe obligatoire), document root restreint à `/htdocs`.
-- **Documentation Détaillée** : Pour la configuration du déploiement ou l'adaptation du code à la production, voir le fichier dédié `./.agents/memory/HOSTING.md`.
+- **Environnement Cible** : Hébergement Alwaysdata (domaine officiel `https://ep-sewade.fr`, PHP 8.3.27, MariaDB 11.4, Apache 2.4 mod_fcgid).
+- **Document Root & Isolation** : Pointage strict sur `/public`, code source, vendor et configuration isolés hors de la racine web.
+- **Automatisation & CI/CD** : Pipeline GitHub Actions (`.github/workflows/deploy.yml`) avec contrôle qualité préalable (PHPStan niveau 8, PHP CS Fixer) et déploiement SSH automatique sur push `main`.
+- **Documentation Détaillée** : Pour les spécifications d'infrastructure, secrets et variables d'environnement, voir le fichier dédié `./.agents/memory/HOSTING.md`.
