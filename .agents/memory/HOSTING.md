@@ -10,9 +10,9 @@ Ce document consigne l'ensemble des informations techniques relatives à l'envir
 - **SSL / HTTPS** : Certificat Let's Encrypt automatique avec redirection forcée HTTP -> HTTPS (301).
 
 ## 2. Environnement PHP
-- **Version PHP** : 8.3.27 (Conforme à la contrainte stricte du projet PHP <= 8.3.27 et Symfony 7.4).
-- **Gestionnaire** : Multi-PHP Alwaysdata sélectionné sur PHP 8.3.27 via l'environnement du compte et la configuration du site.
-- **Composer** : Version 2.9+ (utilisant nativement PHP 8.3.27).
+- **Version PHP** : Branche 8.3 (actuellement **8.3.36**, patchée contre la vulnérabilité critique PHP2Shell CVE-2026-109618/19).
+- **Gestionnaire** : Multi-PHP Alwaysdata configuré sur la branche générique `8.3` pour bénéficier automatiquement des patchs de sécurité mineurs.
+- **Composer** : Version 2.9+ (utilisant nativement PHP 8.3).
 
 ## 3. Base de Données
 - **Moteur** : MariaDB 11.4 (11.4.13-MariaDB)
